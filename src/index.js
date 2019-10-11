@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.min.css';
 import App from './App';
+import Resize from './js/Resize';
 import * as serviceWorker from './serviceWorker';
+
+window.addEventListener('resize', Resize.resizeListener);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

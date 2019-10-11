@@ -1,4 +1,5 @@
 import React from 'react';
+import Resize from '../../js/Resize';
 
 export default class Piece extends React.Component {
 
@@ -149,7 +150,7 @@ export default class Piece extends React.Component {
 
   render() {
     return (
-      <span onClick={this.onClick} className={"piece " + this.props.color + " " + this.type} style={{top: this.state.location.y * 102.63 + "px", left: this.state.location.x * 102.63 + "px"}}></span>
+      <span onClick={this.onClick} className={"piece " + this.props.color + " " + this.type} style={{backgroundSize: (Resize.getSize(8, 6).width + "px " + Resize.getSize(8, 2).width + "px"), top: this.state.location.y * Resize.getSize(8).width + "px", left: this.state.location.x * Resize.getSize(8).width + "px", width: Resize.getSize(8).width + "px", height: Resize.getSize(8).width + "px"}}></span>
     )
   }
 }

@@ -6,14 +6,16 @@ import Cavalier from './pieces/Cavalier';
 import Fou from './pieces/Fou';
 import Reine from './pieces/Reine';
 import Roi from './pieces/Roi';
+import Resize from '../js/Resize';
 
 export default class Game extends React.Component {
 
   constructor() {
     super();
     this.plateau = React.createRef();
+    this.gameElement = React.createRef();
     this.selected = null;
-    this.state = {team: "white"};
+    this.state = {team: "white", pieceSize: {width: 102, height: 102}};
     this.pions = [
       // {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
       // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
@@ -51,6 +53,13 @@ export default class Game extends React.Component {
     this.kings = [];
     this.whiteEchec = false;
     this.blackEchec = false;
+    Resize.onResize(() => {
+        this.setState({pieceSize: Resize.getSize(8)});
+    });
+  }
+
+  componentDidMount() {
+      Resize.setGameElement(this.gameElement.current);
   }
 
   kill(piece) {
@@ -112,29 +121,31 @@ export default class Game extends React.Component {
 
   render() {
     return (
-      <section id="game" className={this.state.team}>
-        <Plateau game={this} ref={this.plateau} />
-        {this.pions.map((e, i) => {
-          if (!e.alive) return null;
-          switch (e.type) {
-            case "pion":
-              return <Pion key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            case "tour":
-              return <Tour key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            case "cavalier":
-              return <Cavalier key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            case "fou":
-              return <Fou key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            case "reine":
-              return <Reine key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            case "roi":
-              return <Roi key={i} registerId={i} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
-            default:
-              break;
-          }
-          return null;
-        })}
-      </section>
+        <section id="squareContainer">
+          <section id="game" ref={this.gameElement} className={this.state.team}>
+            <Plateau game={this} ref={this.plateau} />
+            {this.pions.map((e, i) => {
+              if (!e.alive) return null;
+              switch (e.type) {
+                case "pion":
+                  return <Pion key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                case "tour":
+                  return <Tour key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                case "cavalier":
+                  return <Cavalier key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                case "fou":
+                  return <Fou key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                case "reine":
+                  return <Reine key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                case "roi":
+                  return <Roi key={i} registerId={i} width={this.state.pieceSize.width} game={this} plateau={this.plateau} color={e.color} defaultLocation={e.defaultLocation} />
+                default:
+                  break;
+              }
+              return null;
+            })}
+          </section>
+        </section>
     )
   }
 }
