@@ -13,8 +13,13 @@ export default class Plateau extends React.Component {
     }
   }
 
-  glow(object) {
-    let glows = object.glows;
+  glow(piece, object) {
+    let glows = object.glows.filter(location => {
+      if (this.props.game.isTeamInEchec(piece, location)) {
+        return false;
+      }
+      return true
+    });
     let attacked = object.attacked;
     let from = object.from;
     this.setState({squares: this.state.squares.map(e => {

@@ -29,6 +29,15 @@ code {
 #game {
   flex: 1;
   position: relative;
+
+  &.white .piece.white {
+    pointer-events: all;
+  }
+
+  &.black .piece.black {
+    pointer-events: all;
+  }
+
   #plateau {
     width: 100%;
     height: 100%;
@@ -45,18 +54,19 @@ code {
         background-color: #fffaf6;
       }
       &.glow {
-        border: 4px solid rgb(37, 232, 27);
+        border: 8px solid rgb(37, 232, 27);
       }
       &.selected {
         background-color: rgb(185, 6, 6);
       }
       &.attacked {
-        border: 4px solid rgb(185, 6, 6);
+        border: 8px solid rgb(185, 6, 6);
       }
     }
   }
 
   .piece {
+    pointer-events: none;
     background-image: url("/images/pieces.png");
     width: 102px;
     height: 102px;
