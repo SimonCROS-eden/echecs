@@ -2,18 +2,6 @@ import React from 'react';
 
 export default class Square extends React.Component {
 
-  state={
-    glow: false
-  }
-
-  glow() {
-    this.setState({glow: true});
-  }
-
-  unglow() {
-    this.setState({glow: false});
-  }
-
   onClick = () => {
     if (!this.props.glow && !this.props.attacked) return;
     if (this.props.attacked) {
@@ -25,7 +13,7 @@ export default class Square extends React.Component {
 
   render() {
     return (
-      <div onClick={this.onClick} className={"square " + this.props.color + (this.props.glow ? " glow" : "") + (this.props.selected ? " selected" : "") + (this.props.attacked ? " attacked" : "")}></div>
+      <div onClick={this.onClick} className={"square " + this.props.color + (this.props.glow ? " glow" : "") + (this.props.selected ? " selected" : "") + (this.props.attacked ? " attacked" : "") + (this.props.echec ? " echec" : "")}></div>
     )
   }
 }

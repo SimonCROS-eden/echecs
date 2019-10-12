@@ -72,6 +72,9 @@ code {
           &.attacked {
             border: 8px solid rgb(185, 6, 6);
           }
+          &.echec {
+            background-color: #ebad1e;
+          }
         }
       }
 

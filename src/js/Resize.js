@@ -20,7 +20,7 @@ export default class Resize {
             let elementWidth = this.element.clientWidth;
             elementHeight -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom);
             elementWidth -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
-            return {width: (elementWidth / divider) * split, height: (elementWidth / divider) * split};
+            return {width: (elementWidth / divider) * split, height: (elementHeight / divider) * split};
         }
         return {width: (816 / divider) * split, height: (816 / divider) * split};
     }

@@ -8,9 +8,24 @@ export default class Plateau extends React.Component {
     this.state = {squares: []};
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
-        this.state.squares.push({glow: false, selected: false, attacked: false, location:{x: x, y: y}, color: (x%2 - y%2 ? "black" : "white")});
+        this.state.squares.push({glow: false, echec: false, selected: false, attacked: false, location:{x: x, y: y}, color: (x%2 - y%2 ? "black" : "white")});
       }
     }
+  }
+
+  removeEchecStyle() {
+      this.setState({squares: this.state.squares.map(e => {
+        e.echec = false;
+        return e;
+      })});
+  }
+
+  setEchecStyle(location) {
+      this.setState({squares: this.state.squares.map(e => {
+        e.echec = false;
+        if (location.x === e.location.x && location.y === e.location.y) e.echec = true;
+        return e;
+      })});
   }
 
   glow(piece, object) {
@@ -36,7 +51,7 @@ export default class Plateau extends React.Component {
   render() {
     return (
       <section id="plateau">
-        {this.state.squares.map((e, i) => (<Square key={i} selected={e.selected} glow={e.glow} attacked={e.attacked} location={e.location} color={e.color} game={this.props.game} />))}
+        {this.state.squares.map((e, i) => (<Square key={i} selected={e.selected} glow={e.glow} echec={e.echec} attacked={e.attacked} location={e.location} color={e.color} game={this.props.game} />))}
       </section>
     )
   }
