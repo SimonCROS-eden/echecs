@@ -173,7 +173,7 @@ export default class Piece extends React.Component {
     if (this.attackPossibilities) {
       this.attackPossibilities.forEach(e => {
         let location = {x: this.state.location.x + e.x, y: this.state.location.y + e.y};
-        let element = this.props.game.getPieceAt(location, [], 12);
+        let element = this.props.game.getPieceAt(location, []);
         if (element != null && element.props.color !== this.props.color) attackPossibilities.push(location);
       });
     }

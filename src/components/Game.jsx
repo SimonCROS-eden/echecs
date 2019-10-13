@@ -1,5 +1,6 @@
 import React from 'react';
 import Plateau from './Plateau';
+import Choose from './Choose';
 import Pion from './pieces/Pion';
 import Tour from './pieces/Tour';
 import Cavalier from './pieces/Cavalier';
@@ -17,17 +18,17 @@ export default class Game extends React.Component {
     this.selected = null;
     this.state = {team: "white", pieceSize: {width: 102, height: 102}};
     this.pions = [
-      {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
+      // {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
       // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
       // {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 7}, color: "white"},
       // {alive: true, element: null, type: "reine", defaultLocation: {x: 3, y: 7}, color: "white"},
       {alive: true, element: null, type: "roi", defaultLocation: {x: 4, y: 7}, color: "white"},
-      {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 7}, color: "white"},
-      {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 7}, color: "white"},
-      {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 7}, color: "white"},
+      // {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 7}, color: "white"},
+      // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 7}, color: "white"},
+      // {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 7}, color: "white"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 0, y: 6}, color: "white"},
-      {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 6}, color: "white"},
-      {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 6}, color: "white"},
+      // {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 6}, color: "white"},
+      // {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 6}, color: "white"},
       {alive: true, element: null, type: "pion", defaultLocation: {x: 3, y: 6}, color: "white"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 4, y: 6}, color: "white"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 5, y: 6}, color: "white"},
@@ -35,15 +36,15 @@ export default class Game extends React.Component {
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 7, y: 6}, color: "white"},
       // {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 0}, color: "black"},
       // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 0}, color: "black"},
-      {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 0}, color: "black"},
+      // {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 0}, color: "black"},
       // {alive: true, element: null, type: "reine", defaultLocation: {x: 3, y: 0}, color: "black"},
       {alive: true, element: null, type: "roi", defaultLocation: {x: 4, y: 0}, color: "black"},
-      {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 0}, color: "black"},
-      {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 0}, color: "black"},
-      {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 0}, color: "black"},
-      {alive: true, element: null, type: "pion", defaultLocation: {x: 0, y: 1}, color: "black"},
-      {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 1}, color: "black"},
-      {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 1}, color: "black"},
+      // {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 0}, color: "black"},
+      // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 0}, color: "black"},
+      // {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 0}, color: "black"},
+      // {alive: true, element: null, type: "pion", defaultLocation: {x: 0, y: 1}, color: "black"},
+      // {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 1}, color: "black"},
+      // {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 1}, color: "black"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 3, y: 1}, color: "black"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 4, y: 1}, color: "black"},
       // {alive: true, element: null, type: "pion", defaultLocation: {x: 5, y: 1}, color: "black"},
@@ -94,11 +95,11 @@ export default class Game extends React.Component {
     if (piece.type === "roi") this.kings.push({color: piece.props.color, element: piece});
   }
 
-  getPieceAt(location, changements = [], tested = []) {
+  getPieceAt(location, changements = []) {
     let element = this.pions.find(e => {
-        if (!e.alive) return false;
+        if (!e.alive || changements.some(f => f.ignore ? f.element === e.element : false)) return false;
         let eLocation = e.element.state.location;
-        if (changements.some(f => f.element === e.element)) eLocation = changements.find(f => f.element === e.element).newPosition;
+        if (changements.some(f => f.newPosition ? f.element === e.element : false)) eLocation = changements.find(f => f.newPosition ? f.element === e.element : false).newPosition;
         if (location.x === eLocation.x && location.y === eLocation.y) return true;
         return false;
     });
@@ -108,13 +109,13 @@ export default class Game extends React.Component {
   /**
   * if newPosition is defined, it returns test with new pofition for piece
   */
-  isTeamInEchec(piece, newPosition, tested = []) {
-    return this.isInEchec(this.kings.find(e => e.color === piece.props.color), [{element: piece, newPosition: newPosition}], tested);
+  isTeamInEchec(team, changements = [], tested = []) {
+    return this.isInEchec(this.kings.find(e => e.color === team), changements, tested);
   }
 
   isInEchec(king, changements = [], tested = []) {
     for (let p of this.pions) {
-      if (p.alive && p.color !== king.color) {
+      if (p.alive && p.color !== king.color && !changements.some(f => f.ignore ? f.element === p.element : false)) {
         if (p.element.canAttack(king.element, changements, tested)) {
           return true;
         }
@@ -148,6 +149,7 @@ export default class Game extends React.Component {
               }
               return null;
             })}
+            <Choose game={this} />
           </section>
         </section>
     )

@@ -30,12 +30,17 @@ export default class Plateau extends React.Component {
 
   glow(piece, object) {
     let glows = object.glows.filter(location => {
-      if (this.props.game.isTeamInEchec(piece, location)) {
+      if (this.props.game.isTeamInEchec(piece.props.color, [{element: piece, newPosition: location}])) {
         return false;
       }
       return true
     });
-    let attacked = object.attacked;
+    let attacked = object.attacked.filter(location => {
+      if (this.props.game.isTeamInEchec(piece.props.color, [{element: piece, newPosition: location}, {element: this.props.game.getPieceAt(location), ignore: true}])) {
+        return false;
+      }
+      return true
+    });
     let from = object.from;
     this.setState({squares: this.state.squares.map(e => {
       e.glow = false;

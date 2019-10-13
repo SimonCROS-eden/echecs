@@ -1,3 +1,6 @@
+$black: #2e1b0f;
+$white: #fffaf6;
+
 * {
   box-sizing: border-box;
 }
@@ -48,34 +51,81 @@ code {
         pointer-events: all;
       }
 
+      #choosePane {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(#555, 0.4);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &>div {
+              background-color: white;
+              width: 90%;
+              height: 35%;
+              border-radius: 4px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              padding: 20px 80px;
+
+              h2 {
+                  text-align: center;
+                  margin-top: 0;
+              }
+
+              &>div {
+                  width: 100%;
+                  padding-top: 25%;
+                  position: relative;
+                  border: 1px solid $black;
+
+                  &>div {
+                      position: absolute;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      top: 0;
+                      display: grid;
+                      grid-template: 1fr / repeat(4, 1fr);
+                  }
+              }
+          }
+      }
+
       #plateau {
         width: 100%;
         height: 100%;
         display: grid;
         grid-template: repeat(8, 1fr) / repeat(8, 1fr);
+      }
 
-        .square {
+      .square {
           width: 100%;
           height: 100%;
           &.black {
-            background-color: #2e1b0f;
+              background-color: $black;
           }
           &.white {
-            background-color: #fffaf6;
+              background-color: $white;
           }
           &.glow {
-            border: 8px solid rgb(37, 232, 27);
+              border: 8px solid rgb(37, 232, 27);
           }
           &.selected {
-            background-color: rgb(185, 6, 6);
+              background-color: rgb(185, 6, 6) !important;
           }
           &.attacked {
-            border: 8px solid rgb(185, 6, 6);
+              border: 8px solid rgb(185, 6, 6);
           }
           &.echec {
-            background-color: #ebad1e;
+              background-color: #ebad1e;
           }
-        }
       }
 
       .piece {
