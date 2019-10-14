@@ -7,8 +7,11 @@ export default class Square extends React.Component {
     if (this.props.attacked) {
       this.props.game.kill(this.props.game.getPieceAt(this.props.location));
     }
-    this.props.game.getSelected().move(this.props.location);
-    this.props.game.next();
+    if (this.props.game.getSelected().move(this.props.location)) {
+      this.props.game.next();
+    } else {
+      this.props.game.showTransform();
+    }
   }
 
   render() {

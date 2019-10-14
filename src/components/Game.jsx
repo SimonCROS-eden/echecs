@@ -16,24 +16,24 @@ export default class Game extends React.Component {
     this.plateau = React.createRef();
     this.gameElement = React.createRef();
     this.selected = null;
-    this.state = {team: "white", pieceSize: {width: 102, height: 102}};
+    this.state = {team: "white", pieceSize: {width: 102, height: 102}, transformOpen: false};
     this.pions = [
-      // {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "reine", defaultLocation: {x: 3, y: 7}, color: "white"},
+      {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
+      {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
+      {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 7}, color: "white"},
+      {alive: true, element: null, type: "reine", defaultLocation: {x: 3, y: 7}, color: "white"},
       {alive: true, element: null, type: "roi", defaultLocation: {x: 4, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 7}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 0, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 6}, color: "white"},
+      {alive: true, element: null, type: "fou", defaultLocation: {x: 5, y: 7}, color: "white"},
+      {alive: true, element: null, type: "cavalier", defaultLocation: {x: 6, y: 7}, color: "white"},
+      {alive: true, element: null, type: "tour", defaultLocation: {x: 7, y: 7}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 0, y: 6}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 1, y: 3}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 2, y: 6}, color: "white"},
       {alive: true, element: null, type: "pion", defaultLocation: {x: 3, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 4, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 5, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 6, y: 6}, color: "white"},
-      // {alive: true, element: null, type: "pion", defaultLocation: {x: 7, y: 6}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 4, y: 6}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 5, y: 6}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 6, y: 6}, color: "white"},
+      {alive: true, element: null, type: "pion", defaultLocation: {x: 7, y: 6}, color: "white"},
       // {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 0}, color: "black"},
       // {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 0}, color: "black"},
       // {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 0}, color: "black"},
@@ -106,6 +106,18 @@ export default class Game extends React.Component {
     return element ? element.element : null;
   }
 
+  showTransform() {
+    this.setState({transformOpen: true});
+  }
+
+  transform(type) {
+    let o = this.pions.find((e) => this.selected === e.element);
+    o.defaultLocation = this.selected.state.location;
+    o.type = type;
+    this.setState({transformOpen: false});
+    this.next();
+  }
+
   /**
   * if newPosition is defined, it returns test with new pofition for piece
   */
@@ -149,7 +161,7 @@ export default class Game extends React.Component {
               }
               return null;
             })}
-            <Choose game={this} />
+            {this.state.transformOpen ? <Choose game={this} color={this.selected.props.color} /> : null}
           </section>
         </section>
     )

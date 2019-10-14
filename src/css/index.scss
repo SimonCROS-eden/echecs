@@ -93,6 +93,22 @@ code {
                       top: 0;
                       display: grid;
                       grid-template: 1fr / repeat(4, 1fr);
+
+                      .square {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        &:nth-child(2n+1) {
+                          background-color: $white;
+                        }
+                        &:nth-child(2n) {
+                          background-color: $black;
+                        }
+                        .piece {
+                          position: relative;
+                        }
+                      }
                   }
               }
           }

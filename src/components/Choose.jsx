@@ -1,7 +1,11 @@
 import React from 'react';
-import Square from './Square.jsx';
+import PieceRender from './pieces/PieceRender';
 
 export default class Plateau extends React.Component {
+
+  onClick = (type) => {
+    this.props.game.transform(type);
+  }
 
   render() {
     return (
@@ -12,15 +16,27 @@ export default class Plateau extends React.Component {
                 <div>
                     {(() => {
                         let tr = [];
-                        for (var i = 0; i < 4; i++) {
-                            tr.push(<Square key={i} color={i % 2 === 0 ? "white" : "black"} />)
+                        let all = ["reine", "fou", "tour", "cavalier"];
+                        for (let e of all) {
+                          tr.push(<Proposition key={tr.length} color={this.props.color} onClick={this.onClick} type={e} />);
                         }
                         return tr;
                     })()}
                 </div>
+
             </div>
           </div>
       </section>
     )
+  }
+}
+
+class Proposition extends React.Component {
+  render() {
+    return (
+      <div className={"square"} onClick={() => {this.props.onClick(this.props.type)}}>
+        <PieceRender displayType={this.props.type} color={this.props.color} />
+      </div>
+    );
   }
 }

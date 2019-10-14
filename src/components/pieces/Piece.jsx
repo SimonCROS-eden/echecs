@@ -1,7 +1,6 @@
-import React from 'react';
-import Resize from '../../js/Resize';
+import PieceRender from './PieceRender';
 
-export default class Piece extends React.Component {
+export default class Piece extends PieceRender {
 
   constructor(props, type) {
     super(props);
@@ -15,6 +14,7 @@ export default class Piece extends React.Component {
   move(location) {
     this.movements++;
     this.setState({location: location});
+    return true;
   }
 
   canAttack(search, changements, tested) {
@@ -183,11 +183,5 @@ export default class Piece extends React.Component {
   onClick = () => {
     if (this.props.game.state.team !== this.props.color) return;
     this.props.game.setSelected(this);
-  }
-
-  render() {
-    return (
-      <span onClick={this.onClick} className={"piece " + this.props.color + " " + this.type} style={{backgroundSize: (Resize.getSize(8, 6).width + "px " + Resize.getSize(8, 2).width + "px"), top: this.state.location.y * Resize.getSize(8).width + "px", left: this.state.location.x * Resize.getSize(8).width + "px", width: Resize.getSize(8).width + "px", height: Resize.getSize(8).width + "px"}}></span>
-    )
   }
 }

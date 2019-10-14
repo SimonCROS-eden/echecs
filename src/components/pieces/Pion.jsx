@@ -14,6 +14,14 @@ export default class Pion extends Piece {
     }
   }
 
+  move(location) {
+    super.move(location);
+    if ((this.props.color === "white" && location.y === 0) || (this.props.color === "black" && location.y === 7)) {
+      return false;
+    }
+    return true;
+  }
+
   getToGlowPossibilities() {
     if (this.movements > 0) {
       if (this.props.color === "white") {
