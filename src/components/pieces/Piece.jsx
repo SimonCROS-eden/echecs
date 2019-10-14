@@ -18,7 +18,7 @@ export default class Piece extends PieceRender {
   }
 
   canAttack(search, changements, tested) {
-      let canAttack = false;
+    let canAttack = false;
     if (this.attackPossibilities) {
       this.attackPossibilities.forEach(e => {
         let location = {x: this.state.location.x + e.x, y: this.state.location.y + e.y};
