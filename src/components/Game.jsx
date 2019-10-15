@@ -89,21 +89,24 @@ export default class Game extends React.Component {
 
   checkForPat(king) {
     let inEchec = this.isInEchec(king);
-    if (inEchec || this.pions.filter(e => e.color === king.color).length !== 1) return false;
-    let posss = king.element.getToGlowPossibilities();
-    let glows = posss.glows.filter(location => {
-      if (this.isInEchec(king, [{element: king.element, newPosition: location}], true)) {
-        return false;
-      }
-      return true;
-    });
-    let attacked = posss.attacked.filter(location => {
-      if (this.isInEchec(king, [{element: king.element, newPosition: location}, {element: this.getPieceAt(location), ignore: true}])) {
-        return false;
-      }
-      return true;
-    });
-    if (glows.length > 0 || attacked.length > 0) return false;
+    if (inEchec) return false;
+    for (let p of this.pions) {
+      if (!p.alive || p.color !== king.color) continue;
+      let posss = p.element.getToGlowPossibilities();
+      let glows = posss.glows.filter(location => {
+        if (this.isInEchec(king, [{element: p.element, newPosition: location}], true)) {
+          return false;
+        }
+        return true;
+      });
+      let attacked = posss.attacked.filter(location => {
+        if (this.isInEchec(king, [{element: p.element, newPosition: location}, {element: this.getPieceAt(location), ignore: true}])) {
+          return false;
+        }
+        return true;
+      });
+      if (glows.length > 0 || attacked.length > 0) return false;
+    }
     this.pat = true;
     this.setState({end: true});
     return true;
@@ -143,9 +146,13 @@ export default class Game extends React.Component {
     return this.selected;
   }
 
-  next() {
+  resetClicked() {
     this.selected = null;
     this.plateau.current.glow(null, {glows: [], attacked: [], roques: [], from: {x: -1, y: -1}});
+  }
+
+  next() {
+    this.resetClicked();
     this.plateau.current.removeEchecStyle();
     this.setState({team: (this.state.team === "white" ? "black" : "white")});
   }
@@ -222,7 +229,7 @@ export default class Game extends React.Component {
               return null;
             })}
             {this.state.transformOpen ? <Choose game={this} color={this.selected.props.color} /> : null}
-            {this.state.end ? <Mat game={this} message={this.mat ? "Echec et mat !" : "Echec et pat !"} /> : null}
+            {this.state.end ? <Mat game={this} message={this.mat ? "Echec et mat !" : "Pat !"} /> : null}
           </section>
         </section>
     )

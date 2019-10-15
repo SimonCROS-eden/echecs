@@ -182,6 +182,10 @@ export default class Piece extends PieceRender {
 
   onClick = () => {
     if (this.props.game.state.team !== this.props.color) return;
+    if (this.props.game.getSelected() === this) {
+      this.props.game.resetClicked();
+      return;
+    }
     this.props.game.setSelected(this);
   }
 }
