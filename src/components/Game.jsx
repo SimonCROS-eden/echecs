@@ -1,6 +1,7 @@
 import React from 'react';
 import Plateau from './Plateau';
 import Choose from './Choose';
+import Mat from './Mat';
 import Pion from './pieces/Pion';
 import Tour from './pieces/Tour';
 import Cavalier from './pieces/Cavalier';
@@ -16,7 +17,7 @@ export default class Game extends React.Component {
     this.plateau = React.createRef();
     this.gameElement = React.createRef();
     this.selected = null;
-    this.state = {team: "white", pieceSize: {width: 102, height: 102}, transformOpen: false};
+    this.state = {team: "white", end: false, pieceSize: {width: 102, height: 102}, transformOpen: false};
     this.pions = [
       {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
       {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
@@ -54,20 +55,78 @@ export default class Game extends React.Component {
     this.kings = [];
     this.whiteEchec = false;
     this.blackEchec = false;
+    this.mat = false;
+    this.pat = false;
     Resize.onResize(() => {
         this.setState({pieceSize: Resize.getSize(8)});
     });
   }
 
+  checkForMat(king) {
+    let inEchec = this.isInEchec(king);
+    if (!inEchec) return false;
+    for (let p of this.pions) {
+      if (!p.alive || p.color !== king.color) continue;
+      let posss = p.element.getToGlowPossibilities();
+      let glows = posss.glows.filter(location => {
+        if (this.isInEchec(king, [{element: p.element, newPosition: location}], true)) {
+          return false;
+        }
+        return true;
+      });
+      let attacked = posss.attacked.filter(location => {
+        if (this.isInEchec(king, [{element: p.element, newPosition: location}, {element: this.getPieceAt(location), ignore: true}])) {
+          return false;
+        }
+        return true;
+      });
+      if (glows.length > 0 || attacked.length > 0) return false;
+    }
+    this.mat = true;
+    this.setState({end: true});
+    return true;
+  }
+
+  checkForPat(king) {
+    let inEchec = this.isInEchec(king);
+    if (inEchec || this.pions.filter(e => e.color === king.color).length !== 1) return false;
+    let posss = king.element.getToGlowPossibilities();
+    let glows = posss.glows.filter(location => {
+      if (this.isInEchec(king, [{element: king.element, newPosition: location}], true)) {
+        return false;
+      }
+      return true;
+    });
+    let attacked = posss.attacked.filter(location => {
+      if (this.isInEchec(king, [{element: king.element, newPosition: location}, {element: this.getPieceAt(location), ignore: true}])) {
+        return false;
+      }
+      return true;
+    });
+    if (glows.length > 0 || attacked.length > 0) return false;
+    this.pat = true;
+    this.setState({end: true});
+    return true;
+  }
+
   componentDidMount() {
-      Resize.setGameElement(this.gameElement.current);
+    Resize.setGameElement(this.gameElement.current);
+  }
+
+  getKing(color) {
+    return this.kings.find(e => e.color === this.state.team);
   }
 
   componentDidUpdate() {
-      this.plateau.current.removeEchecStyle();
-      if (this.isInEchec(this.kings.find(e => e.color === (this.state.team)))) {
-          this.plateau.current.setEchecStyle(this.kings.find(e => e.color === this.state.team).element.state.location);
+    if (!this.state.end) {
+      let king = this.getKing(this.state.team);
+      if (this.isInEchec(king)) {
+          this.plateau.current.setEchecStyle(king.element.state.location);
+          this.checkForMat(king);
+      } else {
+        this.checkForPat(king);
       }
+    }
   }
 
   kill(piece) {
@@ -87,6 +146,7 @@ export default class Game extends React.Component {
   next() {
     this.selected = null;
     this.plateau.current.glow(null, {glows: [], attacked: [], roques: [], from: {x: -1, y: -1}});
+    this.plateau.current.removeEchecStyle();
     this.setState({team: (this.state.team === "white" ? "black" : "white")});
   }
 
@@ -122,14 +182,13 @@ export default class Game extends React.Component {
   * if newPosition is defined, it returns test with new pofition for piece
   */
   isTeamInEchec(team, changements = []) {
-    return this.isInEchec(this.kings.find(e => e.color === team), changements);
+    return this.isInEchec(this.getKing(team), changements);
   }
 
   isInEchec(king, changements = []) {
     for (let p of this.pions) {
-      let tested = []
       if (p.alive && p.color !== king.color && !changements.some(f => f.ignore ? f.element === p.element : false)) {
-        if (p.element.canAttack(king.element, changements, tested)) {
+        if (p.element.canAttack(king.element, changements, [])) {
           return true;
         }
       }
@@ -163,6 +222,7 @@ export default class Game extends React.Component {
               return null;
             })}
             {this.state.transformOpen ? <Choose game={this} color={this.selected.props.color} /> : null}
+            {this.state.end ? <Mat game={this} message={this.mat ? "Echec et mat !" : "Echec et pat !"} /> : null}
           </section>
         </section>
     )

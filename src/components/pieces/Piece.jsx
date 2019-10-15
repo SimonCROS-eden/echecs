@@ -17,7 +17,7 @@ export default class Piece extends PieceRender {
     return true;
   }
 
-  canAttack(search, changements, tested) {
+  canAttack(search, changements, tested, a) {
     let canAttack = false;
     if (this.attackPossibilities) {
       this.attackPossibilities.forEach(e => {
@@ -57,10 +57,10 @@ export default class Piece extends PieceRender {
         } else if (e.y === 999 && e.x !== 999) {
           for (let direction = -1; direction < 2; direction+=2) {
             for (let i = 1; i < 8; i++) {
-              let location = {y: this.state.location.y + (i * direction), x: this.state.location.x + e.x};
+              let location = {x: this.state.location.x + e.x, y: this.state.location.y + (i * direction)};
               if (location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7 || tested.some(e => e.x === location.x && e.y === location.y)) continue;
               tested.push(location);
-              let element = this.props.game.getPieceAt(location, changements);
+              let element = this.props.game.getPieceAt(location, changements, a);
               if (element !== null) {
                   if (element === search) {canAttack = true; return;};
                   break;
@@ -130,7 +130,7 @@ export default class Piece extends PieceRender {
       } else if (e.y === 999 && e.x !== 999) {
         for (let direction = -1; direction < 2; direction+=2) {
           for (let i = 1; i < 8; i++) {
-            let location = {y: this.state.location.y + (i * direction), x: this.state.location.x + e.x};
+            let location = {x: this.state.location.x + e.x, y: this.state.location.y + (i * direction)};
             if (location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7) continue;
             let element = this.props.game.getPieceAt(location);
             if (location.x === this.state.location.x && location.y === this.state.location.y) continue;
