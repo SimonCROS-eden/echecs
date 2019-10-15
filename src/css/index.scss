@@ -139,6 +139,9 @@ code {
           &.attacked {
               border: 8px solid rgb(185, 6, 6);
           }
+          &.roque {
+              border: 8px solid rgb(54, 152, 255);
+          }
           &.echec {
               background-color: #ebad1e;
           }

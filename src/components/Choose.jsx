@@ -23,7 +23,6 @@ export default class Plateau extends React.Component {
                         return tr;
                     })()}
                 </div>
-
             </div>
           </div>
       </section>

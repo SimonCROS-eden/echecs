@@ -177,7 +177,7 @@ export default class Piece extends PieceRender {
         if (element != null && element.props.color !== this.props.color) attackPossibilities.push(location);
       });
     }
-    return {glows: movePossibilities, attacked: attackPossibilities, from: this.state.location};
+    return {glows: movePossibilities, attacked: attackPossibilities, roques: [], from: this.state.location};
   }
 
   onClick = () => {

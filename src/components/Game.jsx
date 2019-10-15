@@ -86,7 +86,7 @@ export default class Game extends React.Component {
 
   next() {
     this.selected = null;
-    this.plateau.current.glow(null, {glows: [], attacked: [], from: {x: -1, y: -1}});
+    this.plateau.current.glow(null, {glows: [], attacked: [], roques: [], from: {x: -1, y: -1}});
     this.setState({team: (this.state.team === "white" ? "black" : "white")});
   }
 
