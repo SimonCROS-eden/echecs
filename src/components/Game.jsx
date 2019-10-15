@@ -19,7 +19,7 @@ export default class Game extends React.Component {
     this.selected = null;
     this.state = {team: "white", end: false, pieceSize: {width: 102, height: 102}, transformOpen: false};
     this.pions = [
-      {alive: true, element: null, type: "tour", defaultLocation: {x: 0, y: 7}, color: "white"},
+      {alive: true, element: null, type: "tour", defaultLocation: {x: 4, y: 4}, color: "white"},
       {alive: true, element: null, type: "cavalier", defaultLocation: {x: 1, y: 7}, color: "white"},
       {alive: true, element: null, type: "fou", defaultLocation: {x: 2, y: 7}, color: "white"},
       {alive: true, element: null, type: "reine", defaultLocation: {x: 3, y: 7}, color: "white"},

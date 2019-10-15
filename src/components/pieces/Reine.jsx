@@ -4,6 +4,6 @@ export default class Reine extends Piece {
 
   constructor(props) {
     super(props, "reine");
-    this.possibilities = [{x: 999, y: 999}, {x: 0, y: 999}, {x: 999, y: 0}];
+    this.possibilities = [{x: 0, y: 1, width: 7}, {x: 1, y: 1, width: 7}, {x: 1, y: -0, width: 7}, {x: 0, y: -1, width: 7}, {x: -1, y: -1, width: 7}, {x: -1, y: 0, width: 7}, {x: -1, y: 1, width: 7}, {x: 1, y: -1, width: 7}];
   }
 }

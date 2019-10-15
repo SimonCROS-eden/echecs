@@ -42,14 +42,14 @@ code {
       bottom: 0;
       top: 0;
       border: 2px solid black;
-      transition: transform 2s ease;
+      transition: transform 0.5s ease;
 
       &.black {
-        transform: rotateZ(180deg);
+        //transform: rotateZ(180deg);
       }
 
       &.black .piece {
-        transform: rotateZ(180deg);
+        //transform: rotateZ(180deg);
       }
 
       &.white .piece.white {
@@ -163,7 +163,7 @@ code {
         height: 102px;
         background-size: 612px 204px;
         position: absolute;
-        transition: all 2s ease;
+        transition: all 0.5s ease;
         //Default for one : 213
         &.black {
           background-position-y: 100%;

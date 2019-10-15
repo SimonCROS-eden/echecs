@@ -6,11 +6,11 @@ export default class Pion extends Piece {
     super(props, "pion");
 
     if (props.color === "white") {
-      this.possibilities = [{x: 0, y: -1}, {x: 0, y: -2}];
-      this.attackPossibilities = [{x: 1, y: -1}, {x: -1, y: -1}]
+      this.possibilities = [{x: 0, y: -1, width: 2}];
+      this.attackPossibilities = [{x: 1, y: -1, width: 1}, {x: -1, y: -1, width: 1}]
     } else {
-      this.possibilities = [{x: 0, y: 1}, {x: 0, y: 2}];
-      this.attackPossibilities = [{x: 1, y: 1}, {x: -1, y: 1}]
+      this.possibilities = [{x: 0, y: 1, width: 2}];
+      this.attackPossibilities = [{x: 1, y: 1, width: 1}, {x: -1, y: 1, width: 1}]
     }
   }
 
@@ -25,9 +25,9 @@ export default class Pion extends Piece {
   getToGlowPossibilities() {
     if (this.movements > 0) {
       if (this.props.color === "white") {
-        this.possibilities = [{x: 0, y: -1}];
+        this.possibilities = [{x: 0, y: -1, width: 1}];
       } else {
-        this.possibilities = [{x: 0, y: 1}];
+        this.possibilities = [{x: 0, y: 1, width: 1}];
       }
     }
     return super.getToGlowPossibilities();
