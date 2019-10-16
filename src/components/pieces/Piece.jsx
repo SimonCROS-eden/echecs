@@ -1,3 +1,4 @@
+import Socket from '../../js/Socket';
 import PieceRender from './PieceRender';
 
 export default class Piece extends PieceRender {
@@ -81,6 +82,6 @@ export default class Piece extends PieceRender {
             this.props.game.resetClicked();
             return;
         }
-        this.props.game.setSelected(this);
+        Socket.getSocket().emit("select", {id: this.id});
     }
 }

@@ -1,24 +1,11 @@
 import React from 'react';
+import Socket from '../js/Socket';
 
-export default class Square extends React.Component {
+export default class Square extends React.Component {$
 
-  onClick = () => {
-    if (!this.props.glow && !this.props.attacked && !this.props.roque) return;
-    if (this.props.attacked) {
-      this.props.game.kill(this.props.game.getPieceAt(this.props.location));
+    onClick = () => {
+        Socket.getSocket().emit("square", {id: this.props.id});
     }
-    if (this.props.roque) {
-      this.props.roque.king.move(this.props.roque.kingLocation);
-      this.props.roque.tour.move(this.props.roque.tourLocation);
-      this.props.game.next();
-      return;
-    }
-    if (this.props.game.getSelected().move(this.props.location)) {
-      this.props.game.next();
-    } else {
-      this.props.game.showTransform();
-    }
-  }
 
   render() {
     return (

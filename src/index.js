@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import './css/index.min.css';
 import App from './App';
 import Resize from './js/Resize';
+import Socket from './js/Socket';
 import * as serviceWorker from './serviceWorker';
 
 window.addEventListener('resize', Resize.resizeListener);
+
+Socket.start();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
