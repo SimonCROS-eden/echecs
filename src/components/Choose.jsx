@@ -1,5 +1,5 @@
 import React from 'react';
-import PieceRender from './pieces/PieceRender';
+import PieceRender from './PieceRender';
 
 export default class Plateau extends React.Component {
 

@@ -16,10 +16,13 @@ io.set('origins', '*:*');
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', function(socket) {
     players.push(new Player(socket));
-    console.log("Connexion");
     if (players.length === 2) {
         new Game(players[0], players[1]);
     }
+
+    socket.on('disconnect', function () {
+        players = players.filter(e => e.getSocket() != socket);
+    });
 });
 
 server.listen(3001, function() {
