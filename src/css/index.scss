@@ -43,6 +43,7 @@ code {
       top: 0;
       border: 2px solid black;
       transition: transform 0.5s ease;
+      overflow: hidden;
 
       &.black {
         //transform: rotateZ(180deg);
