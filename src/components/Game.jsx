@@ -8,32 +8,38 @@ import Socket from '../js/Socket';
 
 export default class Game extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.plateau = React.createRef();
     this.gameElement = React.createRef();
-    this.state = {team: "white", end: false, pieceSize: {width: 102, height: 102}, transformOpen: false, pieces: []};
+    this.state = {pieceSize: {width: 102, height: 102}, transformOpen: false, pieces: [], tableProperties: []};
     Resize.onResize(() => {
         this.setState({pieceSize: Resize.getSize(8)});
     });
-    Socket.on("select", data => this.setSelected(data.id));
-    Socket.on("update", data => this.setState({pieces: data.pieces}));
+    Socket.on("tableUpdate", data => this.setState({tableProperties: data.tableProperties}));
+    Socket.on("update", data => this.setState({pieces: data.pieces, tableProperties: data.tableProperties}));
   }
 
   componentDidMount() {
       Resize.setGameElement(this.gameElement.current);
   }
 
+  clickPiece = (id) => {
+      Socket.send("clickPiece", {id: id});
+  }
+
   render() {
     return (
         <section id="squareContainer">
           <section id="game" ref={this.gameElement} className={this.state.team}>
-            <Plateau game={this} ref={this.plateau} />
-            {
-                this.state.pieces.map(e =>
-                    (<PieceRender location={e.location} color={e.color} onClick={() => {}} />)
-                )
-            }
+            <div id="tableContainer" className={this.props.team}>
+                <Plateau game={this} ref={this.plateau} tableProperties={this.state.tableProperties} />
+                {
+                    this.state.pieces.map((e, i) =>{
+                        return (<PieceRender key={e.id} id={e.id} type={e.type} location={e.location} color={e.color} clicked={this.clickPiece} />)
+                    })
+                }
+            </div>
             {this.state.transformOpen ? <Choose game={this} color={this.selected.props.color} /> : null}
             {this.state.end ? <Mat game={this} message={this.mat ? "Echec et mat !" : "Pat !"} /> : null}
           </section>

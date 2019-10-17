@@ -1,7 +1,7 @@
 import SocketIO from "socket.io-client";
 
 export default class Socket {
-    static target = "http://192.168.1.34:3001";
+    static target = "http://localhost:3001";
     static socket = null;
 
     static start() {
@@ -10,6 +10,10 @@ export default class Socket {
 
     static on(evt, callback) {
         Socket.socket.on(evt, data => callback(data));
+    }
+
+    static send(message, content) {
+        Socket.getSocket().emit(message, content);
     }
 
     static getSocket() {

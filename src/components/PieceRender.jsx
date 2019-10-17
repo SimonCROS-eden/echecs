@@ -5,11 +5,11 @@ export default class PieceRender extends React.Component {
 
   constructor(props) {
     super(props);
-    if (this.props.displayType) this.type = this.props.displayType;
+    if (!this.type) this.type = this.props.type;
   }
 
   onClick = () => {
-      if (this.props.onClick) this.props.onClick(this.id);
+      if (this.props.clicked) this.props.clicked(this.props.id);
   }
 
   render() {

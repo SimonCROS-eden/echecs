@@ -1,9 +1,12 @@
 class Piece {
-    constructor(location, color) {
+    constructor(location, color, type, game) {
         this.color = color;
         this.alive = true;
         this.location = location;
         this.movements = 0;
+        this.type = type;
+        this.game = game;
+        this.id = game.getNewId();
     }
 
     move(location) {
@@ -16,10 +19,10 @@ class Piece {
         let canAttack = false;
         if (this.attackPossibilities) {
             this.attackPossibilities.forEach(e => {
-                let location = {x: this.state.location.x + e.x, y: this.state.location.y + e.y};
+                let location = {x: this.location.x + e.x, y: this.location.y + e.y};
                 if (!(location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7 || tested.some(e => e.x === location.x && e.y === location.y))) {
                     tested.push(location);
-                    let element = this.props.game.getPieceAt(location, changements);
+                    let element = this.game.getPieceAt(location, changements);
                     if (element !== null) {
                         if (element === search) {canAttack = true; return;};
                     }
@@ -29,10 +32,10 @@ class Piece {
             this.possibilities.forEach(e => {
                 let start = e.start || 1;
                 for (let i = start; i < (e.width + start); i++) {
-                    let location = {x: this.state.location.x + (e.x * i), y: this.state.location.y + (e.y * i)};
+                    let location = {x: this.location.x + (e.x * i), y: this.location.y + (e.y * i)};
                     if (location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7 || tested.some(e => e.x === location.x && e.y === location.y)) continue;
                     tested.push(location);
-                    let element = this.props.game.getPieceAt(location, changements);
+                    let element = this.game.getPieceAt(location, changements);
                     if (element !== null) {
                         if (element === search) {canAttack = true; return;};
                         break;
@@ -49,12 +52,12 @@ class Piece {
         this.possibilities.forEach(e => {
             let start = e.start || 1;
             for (let i = start; i < (e.width + start); i++) {
-                let location = {x: this.state.location.x + (e.x * i), y: this.state.location.y + (e.y * i)};
+                let location = {x: this.location.x + (e.x * i), y: this.location.y + (e.y * i)};
                 if (location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7) continue;
-                let element = this.props.game.getPieceAt(location);
-                if (location.x === this.state.location.x && location.y === this.state.location.y) continue;
+                let element = this.game.getPieceAt(location);
+                if (location.x === this.location.x && location.y === this.location.y) continue;
                 if (element != null) {
-                    if (element.props.color !== this.props.color && !this.attackPossibilities) attackPossibilities.push(location);
+                    if (element.color !== this.color && !this.attackPossibilities) attackPossibilities.push(location);
                     break;
                 }
                 movePossibilities.push(location);
@@ -62,12 +65,16 @@ class Piece {
         });
         if (this.attackPossibilities) {
           this.attackPossibilities.forEach(e => {
-            let location = {x: this.state.location.x + e.x, y: this.state.location.y + e.y};
-            let element = this.props.game.getPieceAt(location, []);
-            if (element != null && element.props.color !== this.props.color) attackPossibilities.push(location);
+            let location = {x: this.location.x + e.x, y: this.location.y + e.y};
+            let element = this.game.getPieceAt(location, []);
+            if (element != null && element.color !== this.color) attackPossibilities.push(location);
           });
         }
-        return {glows: movePossibilities, attacked: attackPossibilities, roques: [], from: this.state.location};
+        return {glows: movePossibilities, attacked: attackPossibilities, roques: [], from: this.location};
+    }
+
+    toJSON() {
+        return {id: this.id, type: this.type, color: this.color, location: this.location}
     }
 }
 

@@ -6,14 +6,14 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {started: false};
-        Socket.on("start", () => this.setState({started: true}));
+        this.state = {started: false, team: "white"};
+        Socket.on("start", (data) => this.setState({started: true, team: data.team}));
     }
 
     render() {
         if (this.state.started) {
             return (
-                <Game pions={this.state.pions} />
+                <Game team={this.state.team} />
             );
         }
         return (<section></section>)

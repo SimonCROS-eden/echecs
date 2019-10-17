@@ -45,21 +45,24 @@ code {
       transition: transform 0.5s ease;
       overflow: hidden;
 
-      &.black {
-        //transform: rotateZ(180deg);
-      }
+        #tableContainer {
+            width: 100%;
+            height: 100%;
+            &.black {
+              transform: rotateZ(180deg);
+                .piece {
+                  transform: rotateZ(180deg);
+                }
+            }
 
-      &.black .piece {
-        //transform: rotateZ(180deg);
-      }
+              &.white .piece.white {
+                pointer-events: all;
+              }
 
-      &.white .piece.white {
-        pointer-events: all;
-      }
-
-      &.black .piece.black {
-        pointer-events: all;
-      }
+              &.black .piece.black {
+                pointer-events: all;
+              }
+        }
 
       #choosePane {
           position: absolute;

@@ -2,8 +2,8 @@ var Piece = require("./Piece.js").Piece;
 
 class Pion extends Piece {
 
-  constructor(location, color) {
-    super(location, color);
+  constructor(location, color, game) {
+    super(location, color, "pion", game);
 
     if (color === "white") {
       this.possibilities = [{x: 0, y: -1, width: 2}];
