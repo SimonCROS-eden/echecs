@@ -20,6 +20,7 @@ class Piece {
         if (this.attackPossibilities) {
             this.attackPossibilities.forEach(e => {
                 let location = {x: this.location.x + e.x, y: this.location.y + e.y};
+                console.log(location, search.location);
                 if (!(location.x < 0 || location.x > 7 || location.y < 0 || location.y > 7 || tested.some(e => e.x === location.x && e.y === location.y))) {
                     tested.push(location);
                     let element = this.game.getPieceAt(location, changements);

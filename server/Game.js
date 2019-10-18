@@ -21,7 +21,7 @@ class Game {
             // new Tour({x: 0, y: 7}, "white", this),
             // new Cavalier({x: 1, y: 7}, "white", this),
             // new Fou({x: 2, y: 7}, "white", this),
-            new Reine({x: 3, y: 7}, "white", this),
+            new Pion({x: 3, y: 2}, "white", this),
             new Roi({x: 4, y: 7}, "white", this),
             // new Fou({x: 5, y: 7}, "white", this),
             // new Cavalier({x: 6, y: 7}, "white", this),
@@ -119,17 +119,13 @@ class Game {
 
     checkForMat(king) {
       let inEchec = this.isInEchec(king);
-      console.log(1);
       if (!inEchec) return false;
-      console.log(2);
       for (let p of this.pieces) {
-          console.log(3);
         if (!p.alive || p.color !== king.color) continue;
-        console.log(4);
         let posss = p.getToGlowPossibilities();
-        console.log(5);
         let glows = posss.glows.filter(location => {
-          if (this.isInEchec(king, [{element: p, newPosition: location}], true)) {
+            console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+          if (this.isInEchec(king, [{element: p, newPosition: location}])) {
             return false;
           }
           return true;
@@ -176,21 +172,20 @@ class Game {
     }
 
     getKing(color) {
-      return this.pieces.find(e => e.type === "roi" && e.color === this.team);
+      return this.pieces.find(e => e.type === "roi" && e.color === color);
     }
 
     next() {
         if (!this.mat && !this.pat) {
             let king = this.getKing(this.team === "white" ? "black" : "white");
-            console.log(this.isInEchec(king));
+            this.resetClicked();
+            this.plateau.removeEchecStyle();
             if (this.isInEchec(king)) {
                 this.plateau.setEchecStyle(king.location);
                 if (this.checkForMat(king)) return;
             } else {
                 if (this.checkForPat(king)) return;
             }
-            this.resetClicked();
-            this.plateau.removeEchecStyle();
             this.team = this.team === "white" ? "black" : "white";
         }
     }
@@ -225,9 +220,7 @@ class Game {
     isInEchec(king, changements = []) {
       for (let p of this.pieces) {
         if (p.alive && p.color !== king.color && !changements.some(f => f.ignore ? f === p : false)) {
-            console.log(p);
           if (p.canAttack(king, changements, [])) {
-              console.log(4);
             return true;
           }
         }
