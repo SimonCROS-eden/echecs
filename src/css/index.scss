@@ -71,6 +71,18 @@ code {
                 perspective: 1200px;
                 &.black {
                     transform: rotateZ(180deg);
+
+                    #plateau {
+                        transform: rotateZ(180deg);
+
+                        &>.numbers {
+                            flex-direction: column;
+                        }
+
+                        &>.letters {
+                            flex-direction: row-reverse;
+                        }
+                    }
                     .piece {
                         transform: rotateZ(180deg);
                     }
@@ -153,6 +165,34 @@ code {
         height: 100%;
         display: grid;
         grid-template: repeat(8, 1fr) / repeat(8, 1fr);
+        position: relative;
+
+        &>.numbers, &>.letters {
+            color: $white;
+            position: absolute;
+            display: flex;
+            justify-content: space-around;
+            font-weight: bold;
+
+            &>span {
+                text-align: center;
+            }
+
+            &.numbers {
+                top: 0;
+                bottom: 0;
+                left: -20px;
+                width: 20px;
+                flex-direction: column-reverse;
+            }
+
+            &.letters {
+                left: 0;
+                right: 0;
+                bottom: -20px;
+                height: 20px;
+            }
+        }
       }
 
       .square {

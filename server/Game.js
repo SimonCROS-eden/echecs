@@ -100,8 +100,13 @@ class Game {
     clickPiece(id, player) {
         let piece = this.pieces.find(e => e.id === id);
         if (!piece || piece.color !== this.team || this.team !== player.color || piece.color !== player.color) return;
-        this.setSelected(piece);
-        this.plateau.glow(piece, piece.getToGlowPossibilities());
+        if (this.getSelected() === piece) {
+            this.setSelected(null);
+            this.plateau.glow(null, null);
+        } else {
+            this.setSelected(piece);
+            this.plateau.glow(piece, piece.getToGlowPossibilities());
+        }
         this.updateTable();
     }
 

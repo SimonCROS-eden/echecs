@@ -46,35 +46,44 @@ class Plateau {
   }
 
   glow(piece, object) {
-    let glows = object.glows.filter(location => {
-      if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}])) {
-        return false;
-      }
-      return true
-    });
-    let attacked = object.attacked.filter(location => {
-      if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}, {element: this.game.getPieceAt(location), ignore: true}])) {
-        return false;
-      }
-      return true
-    });
-    let roques = object.roques.filter(location => {
-      if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}, {element: this.game.getPieceAt(location), ignore: true}])) {
-        return false;
-      }
-      return true
-    });
-    let from = object.from;
-    this.squares.forEach(e => {
-      e.glow = false;
-      e.selected = false;
-      e.attacked = false;
-      e.roque = null;
-      if (from.x === e.location.x && from.y === e.location.y) e.selected = true;
-      else if (attacked.some(f => f.x === e.location.x && f.y === e.location.y)) e.attacked = true;
-      else if (glows.some(f => f.x === e.location.x && f.y === e.location.y)) e.glow = true;
-      else if (roques.some(f => f.kingLocation.x === e.location.x && f.kingLocation.y === e.location.y)) e.roque = roques.find(f => f.kingLocation.x === e.location.x && f.kingLocation.y === e.location.y);
-    });
+    if (piece && object) {
+        let glows = object.glows.filter(location => {
+          if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}])) {
+            return false;
+          }
+          return true
+        });
+        let attacked = object.attacked.filter(location => {
+          if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}, {element: this.game.getPieceAt(location), ignore: true}])) {
+            return false;
+          }
+          return true
+        });
+        let roques = object.roques.filter(location => {
+          if (this.game.isTeamInEchec(piece.color, [{element: piece, newPosition: location}, {element: this.game.getPieceAt(location), ignore: true}])) {
+            return false;
+          }
+          return true
+        });
+        let from = object.from;
+        this.squares.forEach(e => {
+          e.glow = false;
+          e.selected = false;
+          e.attacked = false;
+          e.roque = null;
+          if (from.x === e.location.x && from.y === e.location.y) e.selected = true;
+          else if (attacked.some(f => f.x === e.location.x && f.y === e.location.y)) e.attacked = true;
+          else if (glows.some(f => f.x === e.location.x && f.y === e.location.y)) e.glow = true;
+          else if (roques.some(f => f.kingLocation.x === e.location.x && f.kingLocation.y === e.location.y)) e.roque = roques.find(f => f.kingLocation.x === e.location.x && f.kingLocation.y === e.location.y);
+        });
+    } else {
+        this.squares.forEach(e => {
+          e.glow = false;
+          e.selected = false;
+          e.attacked = false;
+          e.roque = null;
+        });
+    }
   }
 }
 

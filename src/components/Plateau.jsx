@@ -32,6 +32,28 @@ export default class Plateau extends React.Component {
             }
             return (<Square key={i} id={i} selected={selected} roque={roque} glow={glow} echec={echec} attacked={attacked} location={e.location} color={e.color} />)
         })}
+        <div className="numbers">
+            {
+                (() => {
+                    let tr = [];
+                    for (var i = 0; i < 8; i++) {
+                        tr.push(<span key={i}>{i+1}</span>);
+                    }
+                    return tr;
+                })()
+            }
+        </div>
+        <div className="letters">
+            {
+                (() => {
+                    let tr = [];
+                    for (var i = 0; i < 8; i++) {
+                        tr.push(<span key={i}>{String.fromCharCode(i + 65)}</span>);
+                    }
+                    return tr;
+                })()
+            }
+        </div>
       </section>
     )
   }
