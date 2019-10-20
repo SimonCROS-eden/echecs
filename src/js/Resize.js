@@ -28,7 +28,6 @@ export default class Resize {
         if (!Resize.squareElement) return 0;
         let w = Resize.squareElement.clientWidth;
         let h = Resize.squareElement.clientHeight;
-        console.log(h);
         return Math.min(w, h);
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Players from './components/Players';
 import Game from './components/Game';
 import Socket from './js/Socket';
 
@@ -6,7 +7,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {started: false, team: "white", display3d: false};
+        this.state = {started: false, team: "white", display3d: false, pseudo: null};
         Socket.on("start", (data) => this.setState({started: true, team: data.team}));
     }
 
@@ -24,7 +25,7 @@ class App extends React.Component {
                 </main>
             );
         }
-        return (<section></section>)
+        return (<section><Players pseudo={this.state.pseudo} /></section>)
     }
 }
 
