@@ -18,7 +18,7 @@ class Plateau {
 
   clickSquare(id) {
     let square = this.squares[id];
-    if (!square.glow && !square.attacked && !square.roque) return;
+    if (!square.glow && !square.attacked && !square.roque) return false;
     if (square.attacked) {
       this.game.kill(this.game.getPieceAt(square.location));
     }
@@ -26,13 +26,15 @@ class Plateau {
       square.roque.king.move(square.roque.kingLocation);
       square.roque.tour.move(square.roque.tourLocation);
       this.game.next();
-      return;
+      return true;
     }
     if (this.game.getSelected().move(square.location)) {
       this.game.next();
     } else {
       this.game.showTransform();
+      return false;
     }
+    return true;
   }
 
   removeEchecStyle() {

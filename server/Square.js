@@ -1,14 +1,14 @@
 class Square {
 
-    attacked = false;
-    roque = null;
-    glow = false;
-    echec = false;
-    selected = false;
-
     constructor(location, id) {
         this.location = location;
         this.id = id;
+
+        this.attacked = false;
+        this.roque = null;
+        this.glow = false;
+        this.echec = false;
+        this.selected = false;
     }
 
     setGlow(glow) {

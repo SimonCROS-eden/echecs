@@ -4,7 +4,7 @@ import PieceRender from './PieceRender';
 export default class Plateau extends React.Component {
 
   onClick = (type) => {
-    this.props.game.transform(type);
+    this.props.transform(type);
   }
 
   render() {
@@ -34,7 +34,7 @@ class Proposition extends React.Component {
   render() {
     return (
       <div className={"square"} onClick={() => {this.props.onClick(this.props.type)}}>
-        <PieceRender displayType={this.props.type} color={this.props.color} />
+        <PieceRender type={this.props.type} color={this.props.color} />
       </div>
     );
   }

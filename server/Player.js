@@ -1,8 +1,7 @@
 class Player {
 
-    color = "";
-
     constructor(socket) {
+        this.color = "";
         this.setSocket(socket);
     }
 
