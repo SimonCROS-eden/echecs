@@ -28,9 +28,11 @@ io.sockets.on('connection', function(socket) {
     p.on('ask', (data) => {
         if (isPlayer(data.name)) {
             let dp = getPlayerFromName(data.name);
-            if (!dp) return;
+            if (!dp || dp.isInGame()) return;
             if (dp.getAsked() && dp.getAsked() === p) {
-                new Game(p, dp);
+                p.setAsked(null);
+                dp.setAsked(null);
+                new Game(p, dp, updatePlayers);
                 updatePlayers();
             } else {
                 let old = p.getAsked();
@@ -48,9 +50,13 @@ io.sockets.on('connection', function(socket) {
         players = players.filter(e => e !== p);
         updatePlayers();
     });
+
+    p.on('updatePlayers', () => {
+        updatePlayersFor(p);
+    });
 });
 
-function updatePlayers() {
+var updatePlayers = () => {
     players.forEach(pl => {
         if (pl.isInGame() || !pl.isReady()) return;
         updatePlayersFor(pl);

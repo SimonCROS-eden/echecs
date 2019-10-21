@@ -30,7 +30,7 @@ class App extends React.Component {
                 </main>
             );
         }
-        return (<section><Players name={this.state.name} /></section>)
+        return (<main><Players name={this.state.name} /></main>)
     }
 }
 

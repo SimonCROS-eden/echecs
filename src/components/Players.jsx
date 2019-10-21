@@ -9,10 +9,12 @@ export default class Players extends React.Component {
     }
 
     componentDidMount() {
-        Socket.on("players", (data) => {
-            console.log(data.players);
-            this.setState({players: data.players});
-        });
+        Socket.on("players", (data) => this.setState({players: data.players}));
+        Socket.send("updatePlayers");
+    }
+
+    componentWillUnmount() {
+        Socket.getSocket().removeAllListeners("players");
     }
 
     change = (evt) => {

@@ -8,48 +8,48 @@ var Plateau = require("./Plateau.js").Plateau;
 
 class Game {
 
-    constructor(player1, player2) {
+    constructor(player1, player2, updatePlayers) {
         this.whiteEchec = false;
         this.blackEchec = false;
-        this.mat = false;
-        this.pat = false;
+        this.end = false;
         this.team = "white";
         this.selected = null;
         this.newId = 0;
+        this.updatePlayers = updatePlayers;
         this.plateau = new Plateau(this);
         this.pieces = [
-            new Tour({x: 0, y: 7}, "white", this),
-            new Cavalier({x: 1, y: 7}, "white", this),
-            new Fou({x: 2, y: 7}, "white", this),
-            new Reine({x: 3, y: 7}, "white", this),
+            new Tour({x: 0, y: 6}, "white", this),
+            // new Cavalier({x: 1, y: 7}, "white", this),
+            // new Fou({x: 2, y: 7}, "white", this),
+            // new Reine({x: 3, y: 7}, "white", this),
             new Roi({x: 4, y: 7}, "white", this),
-            new Fou({x: 5, y: 7}, "white", this),
-            new Cavalier({x: 6, y: 7}, "white", this),
-            new Tour({x: 7, y: 7}, "white", this),
-            new Pion({x: 0, y: 6}, "white", this),
-            new Pion({x: 1, y: 6}, "white", this),
-            new Pion({x: 2, y: 6}, "white", this),
-            new Pion({x: 3, y: 6}, "white", this),
-            new Pion({x: 4, y: 6}, "white", this),
-            new Pion({x: 5, y: 6}, "white", this),
-            new Pion({x: 6, y: 6}, "white", this),
-            new Pion({x: 7, y: 6}, "white", this),
-            new Tour({x: 0, y: 0}, "black", this),
-            new Cavalier({x: 1, y: 0}, "black", this),
-            new Fou({x: 2, y: 0}, "black", this),
-            new Reine({x: 3, y: 0}, "black", this),
-            new Roi({x: 4, y: 0}, "black", this),
-            new Fou({x: 5, y: 0}, "black", this),
-            new Cavalier({x: 6, y: 0}, "black", this),
-            new Tour({x: 7, y: 0}, "black", this),
-            new Pion({x: 0, y: 1}, "black", this),
-            new Pion({x: 1, y: 1}, "black", this),
-            new Pion({x: 2, y: 1}, "black", this),
-            new Pion({x: 3, y: 1}, "black", this),
-            new Pion({x: 4, y: 1}, "black", this),
-            new Pion({x: 5, y: 1}, "black", this),
-            new Pion({x: 6, y: 1}, "black", this),
-            new Pion({x: 7, y: 1}, "black", this)
+            // new Fou({x: 5, y: 7}, "white", this),
+            // new Cavalier({x: 6, y: 7}, "white", this),
+            new Tour({x: 6, y: 7}, "white", this),
+            // new Pion({x: 0, y: 6}, "white", this),
+            // new Pion({x: 1, y: 6}, "white", this),
+            // new Pion({x: 2, y: 6}, "white", this),
+            // new Pion({x: 3, y: 6}, "white", this),
+            // new Pion({x: 4, y: 6}, "white", this),
+            // new Pion({x: 5, y: 6}, "white", this),
+            // new Pion({x: 6, y: 6}, "white", this),
+            // new Pion({x: 7, y: 6}, "white", this),
+            // new Tour({x: 0, y: 0}, "black", this),
+            // new Cavalier({x: 1, y: 0}, "black", this),
+            // new Fou({x: 2, y: 0}, "black", this),
+            // new Reine({x: 3, y: 0}, "black", this),
+            new Roi({x: 7, y: 0}, "black", this),
+            // new Fou({x: 5, y: 0}, "black", this),
+            // new Cavalier({x: 6, y: 0}, "black", this),
+            // new Tour({x: 7, y: 0}, "black", this),
+            // new Pion({x: 0, y: 1}, "black", this),
+            // new Pion({x: 1, y: 1}, "black", this),
+            // new Pion({x: 2, y: 1}, "black", this),
+            // new Pion({x: 3, y: 1}, "black", this),
+            // new Pion({x: 4, y: 1}, "black", this),
+            // new Pion({x: 5, y: 1}, "black", this),
+            // new Pion({x: 6, y: 1}, "black", this),
+            // new Pion({x: 7, y: 1}, "black", this)
         ];
         this.player1 = player1;
         this.player1.setGame(this);
@@ -68,7 +68,7 @@ class Game {
         this.update();
     }
 
-    removeListeners(player) {
+    resetPlayer(player) {
         player.removeListener("clickPiece");
         player.removeListener("clickSquare");
         player.removeListener("transform");
@@ -156,7 +156,7 @@ class Game {
         });
         if (glows.length > 0 || attacked.length > 0) return false;
       }
-      this.mat = true;
+      this.end = true;
       return true;
     }
 
@@ -180,8 +180,7 @@ class Game {
         });
         if (glows.length > 0 || attacked.length > 0) return false;
       }
-      this.pat = true;
-      this.setState({end: true});
+      this.end = true;
       return true;
     }
 
@@ -198,14 +197,14 @@ class Game {
     }
 
     next() {
-        if (!this.mat && !this.pat) {
+        if (!this.end) {
             let king = this.getKing(this.team === "white" ? "black" : "white");
             this.resetClicked();
             this.plateau.removeEchecStyle();
             if (this.isInEchec(king)) {
                 this.plateau.setEchecStyle(king.location);
                 if (this.checkForMat(king)) {
-                    this.end(getPlayerByColor(this.team), getPlayerByColor(this.team === "white" ? "black" : "white"));
+                    this.end(this.getPlayerByColor(this.team), this.getPlayerByColor(this.team === "white" ? "black" : "white"));
                     return;
                 }
             } else {
@@ -264,7 +263,7 @@ class Game {
         let winner = this.player1 === player ? this.player2 : this.player1;
         winner.send("end", {title: "Victoir par forfait", message: player.getName() + " a quitté la partie."});
         winner.setGame(null);
-        this.removeListeners(winner);
+        this.resetPlayer(winner);
     }
 
     end(winner, loser) {
@@ -272,9 +271,10 @@ class Game {
         winner.setGame(null);
         loser.send("end", {title: "Defaite ;(", message: "Echec et mat !"});
         loser.setGame(null);
-        this.removeListeners(this.player1);
-        this.removeListeners(this.player2);
-        updatePlayers();
+        this.resetPlayer(this.player1);
+        this.resetPlayer(this.player2);
+        this.update();
+        this.updatePlayers();
     }
 
     pat() {
@@ -282,9 +282,10 @@ class Game {
         this.player1.setGame(null);
         this.player2.send("end", {title: "Pat", message: "La partie est finie"});
         this.player2.setGame(null);
-        this.removeListeners(this.player1);
-        this.removeListeners(this.player2);
-        updatePlayers();
+        this.resetPlayer(this.player1);
+        this.resetPlayer(this.player2);
+        this.update();
+        this.updatePlayers();
     }
 
     /**
