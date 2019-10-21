@@ -13,7 +13,7 @@ class App extends React.Component {
     }
 
     quit = () => {
-        this.setState({started: false, team: "white"});
+        this.setState({started: false, team: "white", display3d: false});
     }
 
     render() {

@@ -11,45 +11,45 @@ class Game {
     constructor(player1, player2, updatePlayers) {
         this.whiteEchec = false;
         this.blackEchec = false;
-        this.end = false;
+        this.endBool = false;
         this.team = "white";
         this.selected = null;
         this.newId = 0;
         this.updatePlayers = updatePlayers;
         this.plateau = new Plateau(this);
         this.pieces = [
-            new Tour({x: 0, y: 6}, "white", this),
-            // new Cavalier({x: 1, y: 7}, "white", this),
-            // new Fou({x: 2, y: 7}, "white", this),
-            // new Reine({x: 3, y: 7}, "white", this),
+            new Tour({x: 0, y: 7}, "white", this),
+            new Cavalier({x: 1, y: 7}, "white", this),
+            new Fou({x: 2, y: 7}, "white", this),
+            new Reine({x: 3, y: 7}, "white", this),
             new Roi({x: 4, y: 7}, "white", this),
-            // new Fou({x: 5, y: 7}, "white", this),
-            // new Cavalier({x: 6, y: 7}, "white", this),
-            new Tour({x: 6, y: 7}, "white", this),
-            // new Pion({x: 0, y: 6}, "white", this),
-            // new Pion({x: 1, y: 6}, "white", this),
-            // new Pion({x: 2, y: 6}, "white", this),
-            // new Pion({x: 3, y: 6}, "white", this),
-            // new Pion({x: 4, y: 6}, "white", this),
-            // new Pion({x: 5, y: 6}, "white", this),
-            // new Pion({x: 6, y: 6}, "white", this),
-            // new Pion({x: 7, y: 6}, "white", this),
-            // new Tour({x: 0, y: 0}, "black", this),
-            // new Cavalier({x: 1, y: 0}, "black", this),
-            // new Fou({x: 2, y: 0}, "black", this),
-            // new Reine({x: 3, y: 0}, "black", this),
-            new Roi({x: 7, y: 0}, "black", this),
-            // new Fou({x: 5, y: 0}, "black", this),
-            // new Cavalier({x: 6, y: 0}, "black", this),
-            // new Tour({x: 7, y: 0}, "black", this),
-            // new Pion({x: 0, y: 1}, "black", this),
-            // new Pion({x: 1, y: 1}, "black", this),
-            // new Pion({x: 2, y: 1}, "black", this),
-            // new Pion({x: 3, y: 1}, "black", this),
-            // new Pion({x: 4, y: 1}, "black", this),
-            // new Pion({x: 5, y: 1}, "black", this),
-            // new Pion({x: 6, y: 1}, "black", this),
-            // new Pion({x: 7, y: 1}, "black", this)
+            new Fou({x: 5, y: 7}, "white", this),
+            new Cavalier({x: 6, y: 7}, "white", this),
+            new Tour({x: 7, y: 7}, "white", this),
+            new Pion({x: 0, y: 6}, "white", this),
+            new Pion({x: 1, y: 6}, "white", this),
+            new Pion({x: 2, y: 6}, "white", this),
+            new Pion({x: 3, y: 6}, "white", this),
+            new Pion({x: 4, y: 6}, "white", this),
+            new Pion({x: 5, y: 6}, "white", this),
+            new Pion({x: 6, y: 6}, "white", this),
+            new Pion({x: 7, y: 6}, "white", this),
+            new Tour({x: 0, y: 0}, "black", this),
+            new Cavalier({x: 1, y: 0}, "black", this),
+            new Fou({x: 2, y: 0}, "black", this),
+            new Reine({x: 3, y: 0}, "black", this),
+            new Roi({x: 4, y: 0}, "black", this),
+            new Fou({x: 5, y: 0}, "black", this),
+            new Cavalier({x: 6, y: 0}, "black", this),
+            new Tour({x: 7, y: 0}, "black", this),
+            new Pion({x: 0, y: 1}, "black", this),
+            new Pion({x: 1, y: 1}, "black", this),
+            new Pion({x: 2, y: 1}, "black", this),
+            new Pion({x: 3, y: 1}, "black", this),
+            new Pion({x: 4, y: 1}, "black", this),
+            new Pion({x: 5, y: 1}, "black", this),
+            new Pion({x: 6, y: 1}, "black", this),
+            new Pion({x: 7, y: 1}, "black", this)
         ];
         this.player1 = player1;
         this.player1.setGame(this);
@@ -156,7 +156,7 @@ class Game {
         });
         if (glows.length > 0 || attacked.length > 0) return false;
       }
-      this.end = true;
+      this.endBool = true;
       return true;
     }
 
@@ -180,7 +180,7 @@ class Game {
         });
         if (glows.length > 0 || attacked.length > 0) return false;
       }
-      this.end = true;
+      this.endBool = true;
       return true;
     }
 
@@ -197,7 +197,7 @@ class Game {
     }
 
     next() {
-        if (!this.end) {
+        if (!this.endBool) {
             let king = this.getKing(this.team === "white" ? "black" : "white");
             this.resetClicked();
             this.plateau.removeEchecStyle();
@@ -297,7 +297,10 @@ class Game {
 
     isInEchec(king, changements = []) {
       for (let p of this.pieces) {
-        if (p.alive && p.color !== king.color && !changements.some(f => f.ignore ? f.element === p : false)) {
+        if (p.alive && p.color !== king.color && !changements.some(f => {
+            console.log(f.element, f.ignore, p);
+            return f.ignore ? f.element === p : false);
+        }) {
           if (p.canAttack(king, changements, [])) {
             return true;
           }
