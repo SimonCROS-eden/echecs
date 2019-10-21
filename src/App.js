@@ -7,8 +7,13 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {started: false, team: "white", display3d: false, pseudo: null};
+        this.state = {started: false, team: "white", display3d: false, name: null};
+        Socket.on("name", (data) => this.setState({name: data.name}));
         Socket.on("start", (data) => this.setState({started: true, team: data.team}));
+    }
+
+    quit = () => {
+        this.setState({started: false, team: "white"});
     }
 
     render() {
@@ -21,11 +26,11 @@ class App extends React.Component {
                         <div></div>
                       </label>
                     </div>
-                    <Game team={this.state.team} display3d={this.state.display3d} />
+                    <Game quit={this.quit} team={this.state.team} display3d={this.state.display3d} />
                 </main>
             );
         }
-        return (<section><Players pseudo={this.state.pseudo} /></section>)
+        return (<section><Players name={this.state.name} /></section>)
     }
 }
 

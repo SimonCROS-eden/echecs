@@ -1,7 +1,7 @@
 import React from 'react';
 import Plateau from './Plateau';
 import Choose from './Choose';
-import Mat from './Mat';
+import End from './End';
 import PieceRender from './PieceRender';
 import Resize from '../js/Resize';
 import Socket from '../js/Socket';
@@ -14,10 +14,11 @@ export default class Game extends React.Component {
     this.plateau = React.createRef();
     this.squareElement = React.createRef();
     this.wrapperElement = React.createRef();
-    this.state = {transformOpen: false, pieces: [], tableProperties: []};
+    this.state = {transformOpen: false, pieces: [], tableProperties: [], end: false, endTitle: "", endMessage: ""};
     Socket.on("tableUpdate", data => this.setState({tableProperties: data.tableProperties}));
     Socket.on("update", data => this.setState({pieces: data.pieces, tableProperties: data.tableProperties, transformOpen: false}));
     Socket.on("transform", data => this.setState({transformOpen: true}));
+    Socket.on("end", data => {this.setState({end: true, endTitle: data.title, endMessage: data.message})});
   }
 
   componentDidMount() {
@@ -53,8 +54,8 @@ export default class Game extends React.Component {
                         }
                     </section>
                 </div>
-                {this.state.transformOpen ? <Choose transform={(type) => this.transform(type)} color={this.props.team} /> : null}
-                {this.state.end ? <Mat game={this} message={this.mat ? "Echec et mat !" : "Pat !"} /> : null}
+                {this.state.end ? <End quit={this.props.quit} title={this.state.endTitle} message={this.state.endMessage} /> : null}
+                {this.state.transformOpen && !this.state.end ? <Choose transform={(type) => this.transform(type)} color={this.props.team} /> : null}
             </section>
         </section>
     )

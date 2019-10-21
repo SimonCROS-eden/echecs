@@ -52,8 +52,10 @@ class Game {
             new Pion({x: 7, y: 1}, "black", this)
         ];
         this.player1 = player1;
+        this.player1.setGame(this);
         this.player1.color = "white";
         this.player2 = player2;
+        this.player2.setGame(this);
         this.player2.color = "black";
         this.player1.send("start", {team: this.player1.color});
         this.player2.send("start", {team: this.player2.color});
@@ -64,6 +66,12 @@ class Game {
         this.player1.on("transform", data => this.transform(data.type, player1));
         this.player2.on("transform", data => this.transform(data.type, player2));
         this.update();
+    }
+
+    removeListeners(player) {
+        player.removeListener("clickPiece");
+        player.removeListener("clickSquare");
+        player.removeListener("transform");
     }
 
     getNewId() {
@@ -185,6 +193,10 @@ class Game {
       return this.pieces.find(e => e.type === "roi" && e.color === color);
     }
 
+    getPlayerByColor(color) {
+        return this.player1.color === color ? this.player1 : this.player2;
+    }
+
     next() {
         if (!this.mat && !this.pat) {
             let king = this.getKing(this.team === "white" ? "black" : "white");
@@ -192,9 +204,15 @@ class Game {
             this.plateau.removeEchecStyle();
             if (this.isInEchec(king)) {
                 this.plateau.setEchecStyle(king.location);
-                if (this.checkForMat(king)) return;
+                if (this.checkForMat(king)) {
+                    this.end(getPlayerByColor(this.team), getPlayerByColor(this.team === "white" ? "black" : "white"));
+                    return;
+                }
             } else {
-                if (this.checkForPat(king)) return;
+                if (this.checkForPat(king)) {
+                    this.pat();
+                    return;
+                }
             }
             this.team = this.team === "white" ? "black" : "white";
         }
@@ -240,6 +258,33 @@ class Game {
         this.pieces.push(p);
         this.next();
         this.update();
+    }
+
+    stop(player) {
+        let winner = this.player1 === player ? this.player2 : this.player1;
+        winner.send("end", {title: "Victoir par forfait", message: player.getName() + " a quitté la partie."});
+        winner.setGame(null);
+        this.removeListeners(winner);
+    }
+
+    end(winner, loser) {
+        winner.send("end", {title: "Victoir !", message: "Echec et mat !"});
+        winner.setGame(null);
+        loser.send("end", {title: "Defaite ;(", message: "Echec et mat !"});
+        loser.setGame(null);
+        this.removeListeners(this.player1);
+        this.removeListeners(this.player2);
+        updatePlayers();
+    }
+
+    pat() {
+        this.player1.send("end", {title: "Pat", message: "La partie est finie"});
+        this.player1.setGame(null);
+        this.player2.send("end", {title: "Pat", message: "La partie est finie"});
+        this.player2.setGame(null);
+        this.removeListeners(this.player1);
+        this.removeListeners(this.player2);
+        updatePlayers();
     }
 
     /**

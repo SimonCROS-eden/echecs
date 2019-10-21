@@ -15,15 +15,59 @@ io.set('origins', '*:*');
 
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', function(socket) {
-    players.push(new Player(socket));
-    if (players.length === 2) {
-        new Game(players[0], players[1]);
-    }
+    let p = new Player(socket);
+    players.push(p);
 
-    socket.on('disconnect', function () {
-        players = players.filter(e => e.getSocket() != socket);
+    p.on('join', (data) => {
+        if (isPlayer(data.name)) return;
+        p.setName(data.name);
+        p.send('name', {name: p.getName()});
+        updatePlayers();
+    });
+
+    p.on('ask', (data) => {
+        if (isPlayer(data.name)) {
+            let dp = getPlayerFromName(data.name);
+            if (!dp) return;
+            if (dp.getAsked() && dp.getAsked() === p) {
+                new Game(p, dp);
+                updatePlayers();
+            } else {
+                let old = p.getAsked();
+                p.setAsked(dp);
+                if (old) {
+                    updatePlayersFor(old);
+                }
+                updatePlayersFor(dp);
+            }
+        }
+    });
+
+    p.on('disconnect', (data) => {
+        if (p.isInGame()) p.getGame().stop(p);
+        players = players.filter(e => e !== p);
+        updatePlayers();
     });
 });
+
+function updatePlayers() {
+    players.forEach(pl => {
+        if (pl.isInGame() || !pl.isReady()) return;
+        updatePlayersFor(pl);
+    });
+}
+
+function updatePlayersFor(pl) {
+    pl.send('players', {players: players.filter(e => e.isReady() && e !== pl).map(e => {return {name: e.getName(), inGame: e.isInGame(), asked: (e.getAsked() === pl)}})});
+}
+
+function getPlayerFromName(name) {
+    return players.find(pl => pl.isReady() && pl.getName() === name);
+}
+
+function isPlayer(name) {
+    return players.some(pl => pl.isReady() && pl.getName() === name);
+}
 
 server.listen(3001, function() {
     console.log('Serveur connecte sur le port 3001');

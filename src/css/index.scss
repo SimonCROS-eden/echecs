@@ -73,14 +73,15 @@ code {
                     transform: rotateZ(180deg);
 
                     #plateau {
-                        transform: rotateZ(180deg);
 
                         &>.numbers {
                             flex-direction: column;
+                            transform: rotateZ(180deg);
                         }
 
                         &>.letters {
                             flex-direction: row-reverse;
+                            transform: rotateZ(180deg);
                         }
                     }
                     .piece {
@@ -441,6 +442,9 @@ code {
         &>li {
           border-bottom: 1px solid rgb(130, 130, 130);
           padding: 5px 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
         }
       }
     }
