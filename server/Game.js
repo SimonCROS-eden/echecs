@@ -18,19 +18,19 @@ class Game {
         this.updatePlayers = updatePlayers;
         this.plateau = new Plateau(this);
         this.pieces = [
-            new Tour({x: 0, y: 7}, "white", this),
+            new Tour({x: 0, y: 6}, "white", this),
             new Cavalier({x: 1, y: 7}, "white", this),
             new Fou({x: 2, y: 7}, "white", this),
             new Reine({x: 3, y: 7}, "white", this),
-            new Roi({x: 4, y: 7}, "white", this),
+            new Roi({x: 1, y: 7}, "white", this),
             new Fou({x: 5, y: 7}, "white", this),
             new Cavalier({x: 6, y: 7}, "white", this),
-            new Tour({x: 7, y: 7}, "white", this),
+            new Tour({x: 6, y: 7}, "white", this),
             new Pion({x: 0, y: 6}, "white", this),
             new Pion({x: 1, y: 6}, "white", this),
             new Pion({x: 2, y: 6}, "white", this),
             new Pion({x: 3, y: 6}, "white", this),
-            new Pion({x: 4, y: 6}, "white", this),
+            new Pion({x: 4, y: 5}, "white", this),
             new Pion({x: 5, y: 6}, "white", this),
             new Pion({x: 6, y: 6}, "white", this),
             new Pion({x: 7, y: 6}, "white", this),
@@ -38,7 +38,7 @@ class Game {
             new Cavalier({x: 1, y: 0}, "black", this),
             new Fou({x: 2, y: 0}, "black", this),
             new Reine({x: 3, y: 0}, "black", this),
-            new Roi({x: 4, y: 0}, "black", this),
+            new Roi({x: 7, y: 0}, "black", this),
             new Fou({x: 5, y: 0}, "black", this),
             new Cavalier({x: 6, y: 0}, "black", this),
             new Tour({x: 7, y: 0}, "black", this),
@@ -46,7 +46,7 @@ class Game {
             new Pion({x: 1, y: 1}, "black", this),
             new Pion({x: 2, y: 1}, "black", this),
             new Pion({x: 3, y: 1}, "black", this),
-            new Pion({x: 4, y: 1}, "black", this),
+            new Pion({x: 4, y: 2}, "black", this),
             new Pion({x: 5, y: 1}, "black", this),
             new Pion({x: 6, y: 1}, "black", this),
             new Pion({x: 7, y: 1}, "black", this)
@@ -219,7 +219,7 @@ class Game {
 
     getPieceAt(location, changements = []) {
       let element = this.pieces.find(e => {
-          if (!e.alive || changements.some(f => f.ignore ? f === e : false)) return false;
+          if (!e.alive || changements.some(f => f.ignore ? f.element === e : false)) return false;
           let eLocation = e.location;
           if (changements.some(f => f.newPosition ? f.element === e : false)) eLocation = changements.find(f => f.newPosition ? f.element === e : false).newPosition;
           if (location.x === eLocation.x && location.y === eLocation.y) return true;
@@ -297,10 +297,7 @@ class Game {
 
     isInEchec(king, changements = []) {
       for (let p of this.pieces) {
-        if (p.alive && p.color !== king.color && !changements.some(f => {
-            console.log(f.element, f.ignore, p);
-            return f.ignore ? f.element === p : false);
-        }) {
+        if (p.alive && p.color !== king.color && !changements.some(f => f.ignore ? f.element === p : false)) {
           if (p.canAttack(king, changements, [])) {
             return true;
           }

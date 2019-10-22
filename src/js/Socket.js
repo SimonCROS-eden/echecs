@@ -1,7 +1,7 @@
 import SocketIO from "socket.io-client";
 
 export default class Socket {
-    static target = "http://192.168.1.71:3001";
+    static target = "http://192.168.1.70:3001";
     static socket = null;
 
     static start() {
