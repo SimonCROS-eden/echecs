@@ -2,6 +2,7 @@ import React from 'react';
 import Players from './components/Players';
 import Game from './components/Game';
 import Socket from './js/Socket';
+import Rotate from './js/Rotate';
 
 class App extends React.Component {
 
@@ -17,6 +18,7 @@ class App extends React.Component {
     }
 
     render() {
+        Rotate.reverse = this.state.team === "black";
         if (this.state.started) {
             return (
                 <main>

@@ -22,7 +22,6 @@ export default class Game extends React.Component {
   }
 
   componentDidMount() {
-      Resize.setElement(this.wrapperElement.current);
       Resize.setSquareContainerElement(this.squareElement.current);
 
       Rotate.setElement(this.wrapperElement.current);
@@ -43,13 +42,13 @@ export default class Game extends React.Component {
   render() {
     return (
         <section id="squareContainer" ref={this.squareElement}>
-            <section id="game" style={{width: Resize.getContainerWidth() + "px", height: Resize.getContainerWidth() + "px"}} onContextMenu={evt => evt.preventDefault()} onTouchStart={Rotate.onClickStart} onTouchMove={Rotate.onMove} onTouchEnd={Rotate.onClickEnd} onMouseDown={Rotate.onClickStart} onMouseMove={Rotate.onMove} onMouseUp={Rotate.onClickEnd} className={this.state.team}>
-                <div id="tableContainer" className={this.props.display3d ? "transform" : ""} style={Rotate.getStyle()} ref={this.tableElement} >
+            <section id="game" style={{width: Resize.getContainerWidth() + "px", height: Resize.getContainerWidth() + "px"}} onContextMenu={evt => evt.preventDefault()} onTouchStart={Rotate.onClickStart} onTouchMove={Rotate.onMove} onTouchEnd={Rotate.onClickEnd} onMouseDown={Rotate.onClickStart} onMouseMove={Rotate.onMove} onMouseUp={Rotate.onClickEnd} className={this.props.team}>
+                <div id="tableContainer" ref={this.tableElement} >
                     <section ref={this.wrapperElement} className={"wrapper " + this.props.team}>
-                        <Plateau game={this} ref={this.plateau} tableProperties={this.state.tableProperties} />
+                        <Plateau display3d={this.props.display3d} game={this} ref={this.plateau} tableProperties={this.state.tableProperties} />
                         {
                             this.state.pieces.map(e => {
-                                return (<PieceRender key={e.id} id={e.id} type={e.type} location={e.location} color={e.color} clicked={this.clickPiece} />)
+                                return (<PieceRender display3d={this.props.display3d} key={e.id} id={e.id} type={e.type} location={e.location} color={e.color} clicked={this.clickPiece} />)
                             })
                         }
                     </section>

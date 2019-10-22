@@ -4,6 +4,8 @@ export default class Rotate {
     static callback = () => {};
     static rotation = {x: 55, z: 0};
     static isTimeout = false;
+    static getSquareElementByLocation = () => {};
+    static reverse = false;
 
     static setElement(element) {
         Rotate.element = element;
@@ -11,6 +13,10 @@ export default class Rotate {
 
     static getElement() {
         return Rotate.element;
+    }
+
+    static setGetSquareFunction(funct) {
+        Rotate.getSquareElementByLocation = funct;
     }
 
     static setCallback(callback) {Rotate.callback = callback}
@@ -53,8 +59,19 @@ export default class Rotate {
         Rotate.moveZ = false;
     }
 
+    static getPicecStyle(location) {
+        let places = Rotate.getSquareElementByLocation(location).current.getBoundingClientRect();
+        let el = Rotate.element.getBoundingClientRect();
+        return {backgroundSize: ((places.width * 6) + "px " + (places.width * 2) + "px"),
+        top: (places.top + (places.height / 2) - places.width + (places.height / 10) - el.top) + "px",
+        left: (places.left - el.left) + "px",
+        width: places.width + "px",
+        height: places.width + "px",
+        zIndex: Math.round(places.top)}
+    }
+
     static getStyle() {
-        return {transform: "rotateX(" + Rotate.rotation.x + "deg) rotateZ(" + Rotate.rotation.z + "deg) scale(0.65)"};
+        return {transform: "rotateX(" + (Rotate.reverse ? -Rotate.rotation.x : Rotate.rotation.x) + "deg) rotateZ(" + (Rotate.rotation.z) + "deg) scale(0.65)"};
     }
 
     // Non utilisé
