@@ -15,6 +15,7 @@ export default class PieceRender extends React.Component {
 
   render() {
     let location = this.props.location ? this.props.location : {x: 0, y: 0};
+    if (this.props.reverse && !this.props.display3d) location = {x: 7 - this.props.location.x, y: 7 - this.props.location.y};
     let style = {backgroundSize: (Resize.getSize(8, 6).width + "px " + Resize.getSize(8, 2).width + "px"), top: location.y * Resize.getSize(8).width + 20 + "px", left: location.x * Resize.getSize(8).width + 20 + "px", width: Resize.getSize(8).width + "px", height: Resize.getSize(8).width + "px"};
     return (
       <span onClick={this.onClick} className={"piece " + this.props.color + " " + this.type} style={this.props.display3d ? Rotate.getPicecStyle(location) : style}></span>

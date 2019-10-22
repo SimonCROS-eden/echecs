@@ -45,10 +45,11 @@ export default class Game extends React.Component {
             <section id="game" style={{width: Resize.getContainerWidth() + "px", height: Resize.getContainerWidth() + "px"}} onContextMenu={evt => evt.preventDefault()} onTouchStart={Rotate.onClickStart} onTouchMove={Rotate.onMove} onTouchEnd={Rotate.onClickEnd} onMouseDown={Rotate.onClickStart} onMouseMove={Rotate.onMove} onMouseUp={Rotate.onClickEnd} className={this.props.team}>
                 <div id="tableContainer" ref={this.tableElement} >
                     <section ref={this.wrapperElement} className={"wrapper " + this.props.team}>
-                        <Plateau display3d={this.props.display3d} game={this} ref={this.plateau} tableProperties={this.state.tableProperties} />
+                        <Plateau reverse={this.props.team === "black"} display3d={this.props.display3d} game={this} ref={this.plateau} tableProperties={this.state.tableProperties} />
                         {
                             this.state.pieces.map(e => {
-                                return (<PieceRender display3d={this.props.display3d} key={e.id} id={e.id} type={e.type} location={e.location} color={e.color} clicked={this.clickPiece} />)
+                                let location = e.location;
+                                return (<PieceRender reverse={this.props.team === "black"} display3d={this.props.display3d} key={e.id} id={e.id} type={e.type} location={location} color={e.color} clicked={this.clickPiece} />)
                             })
                         }
                     </section>

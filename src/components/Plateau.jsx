@@ -5,16 +5,19 @@ import Resize from '../js/Resize';
 
 export default class Plateau extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {squares: []};
     this.tableElement = React.createRef();
     Rotate.setGetSquareFunction(this.getSquareElementByLocation);
+    let id = 0;
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
-        this.state.squares.push({elementRef: React.createRef(), location:{x: x, y: y}, color: (x%2 - y%2 ? "black" : "white")});
+        this.state.squares.push({id: id, elementRef: React.createRef(), location:{x: x, y: y}, color: (x%2 - y%2 ? "black" : "white")});
+        id++;
       }
     }
+    if (this.props.reverse) this.state.squares.reverse();
   }
 
   componentDidMount() {
@@ -29,7 +32,7 @@ export default class Plateau extends React.Component {
     return (
       <section id="plateau" ref={this.tableElement} style={Rotate.getStyle()} className={this.props.display3d ? "transform" : ""}>
         {this.state.squares.map((e, i) => {
-            let prop = this.props.tableProperties.find(t => t.id === i);
+            let prop = this.props.tableProperties.find(t => t.id === e.id);
             let selected = false,
             glow = false,
             roque = false,
@@ -42,7 +45,7 @@ export default class Plateau extends React.Component {
                 else if (prop.attacked) attacked = true;
                 else if (prop.echec) echec = true;
             }
-            return (<Square key={i} elementRef={e.elementRef} id={i} display3d={this.props.display3d} selected={selected} roque={roque} glow={glow} echec={echec} attacked={attacked} location={e.location} color={e.color} />)
+            return (<Square key={i} elementRef={e.elementRef} id={e.id} display3d={this.props.display3d} selected={selected} roque={roque} glow={glow} echec={echec} attacked={attacked} location={e.location} color={e.color} />)
         })}
         <div className="numbers">
             {

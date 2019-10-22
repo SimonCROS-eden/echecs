@@ -14,7 +14,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   display: flex;
-  margin: 5px;
 }
 
 code {
@@ -47,6 +46,7 @@ code {
     justify-content: center;
     margin-top: 30px;
     overflow: hidden;
+    margin: 5px;
 
     #game {
         width: 100%;
@@ -66,21 +66,15 @@ code {
                 height: 100%;
                 perspective: 1200px;
                 &.black {
-                    transform: rotateZ(180deg);
 
                     #plateau {
                         &>.numbers {
                             flex-direction: column;
-                            transform: rotateZ(180deg);
                         }
 
                         &>.letters {
                             flex-direction: row-reverse;
-                            transform: rotateZ(180deg);
                         }
-                    }
-                    .piece {
-                        transform: rotateZ(180deg);
                     }
                 }
                 &.white .piece.white {

@@ -5,7 +5,6 @@ export default class Rotate {
     static rotation = {x: 55, z: 0};
     static isTimeout = false;
     static getSquareElementByLocation = () => {};
-    static reverse = false;
 
     static setElement(element) {
         Rotate.element = element;
@@ -37,14 +36,14 @@ export default class Rotate {
             Rotate.rotation.x += x < 0 ? -5 : 5;
             Rotate.last[0] = loc[0];
         }
-        if (Math.abs(z) >= 100) {
-            Rotate.rotation.z += z < 0 ? -45 : 45;
+        if (Math.abs(z) >= 25) {
+            Rotate.rotation.z += z < 0 ? -15 : 15;
             Rotate.last[1] = loc[1];
         }
         if (Rotate.rotation.x > 55) Rotate.rotation.x = 55;
         if (Rotate.rotation.x < 0) Rotate.rotation.x = 0;
-        if (Rotate.rotation.z < -90) Rotate.rotation.z = -90;
-        if (Rotate.rotation.z > 90) Rotate.rotation.z = 90;
+        // if (Rotate.rotation.z < -90) Rotate.rotation.z = -90;
+        // if (Rotate.rotation.z > 90) Rotate.rotation.z = 90;
         if (Rotate.isTimeout) return;
         Rotate.isTimeout = true;
         setTimeout(() => {
@@ -71,7 +70,7 @@ export default class Rotate {
     }
 
     static getStyle() {
-        return {transform: "rotateX(" + (Rotate.reverse ? -Rotate.rotation.x : Rotate.rotation.x) + "deg) rotateZ(" + (Rotate.rotation.z) + "deg) scale(0.65)"};
+        return {transform: "rotateX(" + Rotate.rotation.x + "deg) rotateZ(" + (Rotate.rotation.z) + "deg) scale(0.65)"};
     }
 
     // Non utilisé
