@@ -32,14 +32,11 @@ export default class Rotate {
         let x = Rotate.last[0] - loc[0];
         let z = Rotate.last[1] - loc[1];
         if (evt.type === "mousemove") z /= 2;
-        if (Math.abs(x) >= 30) {
-            Rotate.rotation.x += x < 0 ? -5 : 5;
+        let moved = false;
+            Rotate.rotation.x += x / 2;
             Rotate.last[0] = loc[0];
-        }
-        if (Math.abs(z) >= 25) {
-            Rotate.rotation.z += z < 0 ? -15 : 15;
+            Rotate.rotation.z += z / 2;
             Rotate.last[1] = loc[1];
-        }
         if (Rotate.rotation.x > 55) Rotate.rotation.x = 55;
         if (Rotate.rotation.x < 0) Rotate.rotation.x = 0;
         // if (Rotate.rotation.z < -90) Rotate.rotation.z = -90;
@@ -49,7 +46,7 @@ export default class Rotate {
         setTimeout(() => {
             Rotate.callback();
             Rotate.isTimeout = false;
-        }, 150);
+        }, 10);
     }
 
     static onClickEnd(evt) {

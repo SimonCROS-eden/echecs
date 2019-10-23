@@ -156,7 +156,7 @@ code {
         display: grid;
         grid-template: repeat(8, 1fr) / repeat(8, 1fr);
         position: relative;
-        transition: transform 0.4s ease;
+        //transition: transform 0.4s ease;
         border: 20px inset rgb(66, 36, 17);
 
         &:not(.transform) {
@@ -219,12 +219,12 @@ code {
 
       .piece {
         pointer-events: none;
-        background-image: url("/images/pieces.png");
+        background-image: url("/images/pieces2.png");
         width: 102px;
         height: 102px;
         background-size: 612px 204px;
         position: absolute;
-        transition: all 0.5s ease;
+        //transition: all 0.5s ease;
         z-index: 20px;
         //Default for one : 213
         &.black {

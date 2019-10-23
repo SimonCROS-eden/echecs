@@ -14,6 +14,7 @@ export default class Game extends React.Component {
     this.plateau = React.createRef();
     this.squareElement = React.createRef();
     this.wrapperElement = React.createRef();
+    this.toUpdate = 0;
     this.state = {transformOpen: false, pieces: [], tableProperties: [], end: false, endTitle: "", endMessage: ""};
     Socket.on("tableUpdate", data => this.setState({tableProperties: data.tableProperties}));
     Socket.on("update", data => this.setState({pieces: data.pieces, tableProperties: data.tableProperties, transformOpen: false}));
@@ -27,8 +28,18 @@ export default class Game extends React.Component {
       Rotate.setElement(this.wrapperElement.current);
 
       Resize.onResize(() => this.forceUpdate());
-      Rotate.setCallback(() => this.forceUpdate());
+      Rotate.setCallback(() => {
+          this.forceUpdate();
+          this.toUpdate++;
+      });
       this.forceUpdate();
+  }
+
+  componentDidUpdate() {
+      if (this.toUpdate > 0) {
+          this.toUpdate--;
+          this.forceUpdate();
+      }
   }
 
   clickPiece = (id) => {
