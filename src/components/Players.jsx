@@ -14,7 +14,7 @@ export default class Players extends React.Component {
     }
 
     componentWillUnmount() {
-        Socket.getSocket().removeAllListeners("players");
+        Socket.removeAllListeners("players");
     }
 
     change = (evt) => {
@@ -49,10 +49,13 @@ export default class Players extends React.Component {
                       </ul>
                     </div>);
                 }
-                return (<form method="GET" action="" className="usernameForm">
-                  <input autoFocus type="text" name="username" placeholder="Pseudo" value={this.state.input} onChange={this.change} />
-                  <button type="submit" onClick={this.sendPseudo} name="validate">Connexion</button>
-                </form>);
+                return (<section>
+                    <h2>Choisissez votre pseudo</h2>
+                    <form method="GET" action="" className="usernameForm">
+                      <input autoFocus type="text" name="username" placeholder="Pseudo" value={this.state.input} onChange={this.change} />
+                      <button type="submit" onClick={this.sendPseudo} name="validate">Rejoindre</button>
+                    </form>
+                </section>);
             })()}
           </div>
       </section>

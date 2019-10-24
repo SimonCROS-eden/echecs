@@ -5,6 +5,8 @@ $white: #eadab6;
   box-sizing: border-box;
 }
 
+input:focus {outline: none}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -473,6 +475,7 @@ code {
   align-items: center;
   flex-direction: column;
   z-index: 10;
+  font-size: 2em;
   &>div {
     background-color: rgba(#ffffff, 0.8);
     width: 90%;
@@ -482,12 +485,6 @@ code {
     h2 {
       margin: 0;
     }
-    &>* {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      padding: 20px;
-    }
     button {
       background-color: white;
       border-radius: 5px;
@@ -496,25 +493,47 @@ code {
       border: none;
       font-size: 1.2rem;
     }
-    &>.usernameForm {
-      justify-content: center;
-      flex: 1;
-      &>* {
-        margin: 10px 0;
-        font-size: 1.5rem;
-        background: white;
-        border: none;
-        border-radius: 5px;
-      }
-      &>input {
-        text-align: center;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        width: 200px;
+    &>* {
+        flex: 1;
+        padding: 20px;
+        max-width: 100%;
+    }
+    &>section {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          h2 {
+              margin-bottom: 20px;
+          }
+
+        &>.usernameForm {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          &>* {
+            margin: 10px 0;
+            font-size: 1.5rem;
+            background: white;
+            border: none;
+            border-radius: 5px;
+          }
+          &>input {
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            max-width: 100%;
+            width: 500px;
+          }
       }
     }
     &>.players {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
       flex: 1;
       &>ul {
         background-color: white;
@@ -537,4 +556,12 @@ code {
       }
     }
   }
+}
+
+.error {
+    color: rgb(142, 10, 10) !important;
+    text-align: center;
+    &--border {
+        border: 2px solid rgb(142, 10, 10) !important;
+    }
 }

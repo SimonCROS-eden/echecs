@@ -3,12 +3,13 @@ import Players from './components/Players';
 import Game from './components/Game';
 import AskServer from './components/AskServer';
 import Socket from './js/Socket';
+import ConnexionError from './components/ConnexionError';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {started: false, team: "white", display3d: false, name: null, needAskServer: false};
+        this.state = {started: false, team: "white", display3d: false, name: null, needAskServer: false, unknownServer: null, disconnect: null};
     }
 
     componentDidMount() {
@@ -16,7 +17,7 @@ class App extends React.Component {
             Socket.on("name", (data) => this.setState({name: data.name}));
             Socket.on("start", (data) => this.setState({started: true, team: data.team}));
             this.forceUpdate();
-        }, () => {this.setState({needAskServer: true})});
+        }, () => this.setState({needAskServer: true}), (url) => this.setState({unknownServer: url}), (url) => this.setState({disconnect: url}));
     }
 
     quit = () => {
@@ -24,7 +25,8 @@ class App extends React.Component {
     }
 
     render() {
-        if (Socket.connected) {
+        if (!Socket.connecting) {
+            console.log(1);
             if (this.state.started) {
                 return (
                     <main>
@@ -39,6 +41,10 @@ class App extends React.Component {
                 );
             } else if (this.state.needAskServer) {
                 return (<main><AskServer /></main>)
+            } else if (this.state.disconnect) {
+                return (<main><ConnexionError url={this.state.disconnect} message={"Connexion avec le serveur interrompue (\"" + this.state.disconnect + "\")"} /></main>)
+            } else if (this.state.unknownServer) {
+                return (<main><ConnexionError url={this.state.unknownServer} message={"Impossible de se connecter au serveur (\"" + this.state.unknownServer + "\")"} /></main>)
             }
             return (<main><Players name={this.state.name} /></main>)
         }
