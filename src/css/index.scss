@@ -170,6 +170,10 @@ code {
             justify-content: space-around;
             font-weight: bold;
 
+            &, * {
+                user-select: none;
+            }
+
             &>span {
                 text-align: center;
             }
@@ -219,13 +223,23 @@ code {
 
       .piece {
         pointer-events: none;
-        background-image: url("/images/pieces2.png");
+        background-image: url("/images/pieces.png");
         width: 102px;
-        height: 102px;
+        height: 0;
         background-size: 612px 204px;
         position: absolute;
-        //transition: all 0.5s ease;
         z-index: 20px;
+        transition: all 0.5s ease;
+        display: inline-block;
+
+        &.display3d::after {
+            content: "";
+            display: block;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
         //Default for one : 213
         &.black {
           background-position-y: 100%;
@@ -235,21 +249,99 @@ code {
         }
         &.roi {
           background-position-x: calc((100% / 5) * 0);
+
+          &.display3d::after {
+              padding-top: 170%;
+              margin-top: -70%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/roi-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/roi-noir.png");
+          }
         }
         &.reine {
           background-position-x: calc((100% / 5) * 1);
+
+          &.display3d::after {
+              padding-top: 150%;
+              margin-top: -50%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/reine-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/reine-noir.png");
+          }
         }
         &.fou {
           background-position-x: calc((100% / 5) * 2);
+
+          &.display3d::after {
+              padding-top: 130%;
+              margin-top: -30%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/fou-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/fou-noir.png");
+          }
         }
         &.cavalier {
           background-position-x: calc((100% / 5) * 3);
+
+          &.display3d::after {
+              padding-top: 130%;
+              margin-top: -30%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/cavalier-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/cavalier-noir.png");
+          }
         }
         &.tour {
           background-position-x: calc((100% / 5) * 4);
+
+          &.display3d::after {
+              padding-top: 110%;
+              margin-top: -10%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/tour-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/tour-noir.png");
+          }
         }
         &.pion {
           background-position-x: calc((100% / 5) * 5);
+
+          &.display3d::after {
+              padding-top: 90%;
+              margin-top: 10%;
+          }
+
+          &.white.display3d::after {
+              background-image: url("/images/pion-blanc.png");
+            }
+
+        &.black.display3d::after {
+            background-image: url("/images/pion-noir.png");
+          }
         }
       }
     }

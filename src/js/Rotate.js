@@ -21,9 +21,10 @@ export default class Rotate {
     static setCallback(callback) {Rotate.callback = callback}
 
     static onClickStart(evt) {
-        if (evt.type === "mousedown" && evt.button !== 2) return;
+        if (!evt.target.classList.contains("wrapper")) return;
         Rotate.last[0] = evt.pageY || evt.changedTouches[0].pageY;
         Rotate.last[1] = evt.pageX || evt.changedTouches[0].pageX;
+        Rotate.callback();
     }
 
     static onMove(evt) {
@@ -32,7 +33,6 @@ export default class Rotate {
         let x = Rotate.last[0] - loc[0];
         let z = Rotate.last[1] - loc[1];
         if (evt.type === "mousemove") z /= 2;
-        let moved = false;
             Rotate.rotation.x += x / 2;
             Rotate.last[0] = loc[0];
             Rotate.rotation.z += z / 2;
@@ -53,17 +53,19 @@ export default class Rotate {
         Rotate.last = [];
         Rotate.moveX = false;
         Rotate.moveZ = false;
+        Rotate.callback();
     }
 
     static getPicecStyle(location) {
         let places = Rotate.getSquareElementByLocation(location).current.getBoundingClientRect();
         let el = Rotate.element.getBoundingClientRect();
-        return {backgroundSize: ((places.width * 6) + "px " + (places.width * 2) + "px"),
-        top: (places.top + (places.height / 2) - places.width + (places.height / 10) - el.top) + "px",
-        left: (places.left - el.left) + "px",
-        width: places.width + "px",
-        height: places.width + "px",
-        zIndex: Math.round(places.top)}
+        let tr = {backgroundSize: ((places.width * 6) + "px " + (places.width * 2) + "px"),
+        top: (places.top + (places.height / 2) - places.width + (places.width / 3) - el.top) + "px",
+        left: (places.left - el.left + 10) + "px",
+        width: (places.width - 20) + "px",
+        zIndex: Math.round(places.top)};
+        if (Rotate.last.length) tr.transition = "none";
+        return tr;
     }
 
     static getStyle() {
