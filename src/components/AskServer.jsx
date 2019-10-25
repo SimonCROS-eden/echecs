@@ -21,6 +21,9 @@ export default class AskServer extends React.Component {
                   <input autoFocus type="text" name="server" placeholder="Adresse du serveur" value={this.state.input} onChange={this.change} />
                   <button type="submit">Connexion</button>
                 </form>
+                <p>Ou téléchargez un serveur local pour</p>
+                <a href="chess-lan-server-macos" download>MacOS x 64</a>
+                <a href="chess-lan-server-windows.exe" download>Windows x 64</a>
             </section>
           </div>
       </section>
