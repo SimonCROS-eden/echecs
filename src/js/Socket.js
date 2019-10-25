@@ -26,7 +26,7 @@ export default class Socket {
             Socket.socket.disconnect();
             Socket.connected = false;
             Socket.connecting = false;
-            disconnect();
+            disconnect(target.split("%3A").join(':').split("%2F").join("/"));
         });
         Socket.socket.on('connect_error', () => {
             Socket.socket.disconnect();

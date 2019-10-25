@@ -52,7 +52,8 @@ export default class Players extends React.Component {
                 return (<section>
                     <h2>Choisissez votre pseudo</h2>
                     <form method="GET" action="" className="usernameForm">
-                      <input autoFocus type="text" name="username" placeholder="Pseudo" value={this.state.input} onChange={this.change} />
+                      <input className={this.props.nameError ? "error error--border" : null} autoFocus type="text" name="username" placeholder="Pseudo" value={this.state.input} onChange={this.change} />
+                      {<p className="error">{this.props.nameError}</p>}
                       <button type="submit" onClick={this.sendPseudo} name="validate">Rejoindre</button>
                     </form>
                 </section>);

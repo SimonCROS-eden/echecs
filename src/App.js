@@ -9,11 +9,12 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {started: false, team: "white", display3d: false, name: null, needAskServer: false, unknownServer: null, disconnect: null};
+        this.state = {started: false, team: "white", nameError: null, display3d: false, name: null, needAskServer: false, unknownServer: null, disconnect: null};
     }
 
     componentDidMount() {
         Socket.start(() => {
+            Socket.on("nameError", (data) => this.setState({nameError: data.error}));
             Socket.on("name", (data) => this.setState({name: data.name}));
             Socket.on("start", (data) => this.setState({started: true, team: data.team}));
             this.forceUpdate();
@@ -26,8 +27,9 @@ class App extends React.Component {
 
     render() {
         if (!Socket.connecting) {
-            console.log(1);
-            if (this.state.started) {
+            if (this.state.disconnect) {
+                return (<main><ConnexionError url={this.state.disconnect} message={"Communication avec le serveur interrompue (\"" + this.state.disconnect + "\")"} /></main>)
+            } else if (this.state.started) {
                 return (
                     <main>
                         <div className="can-toggle">
@@ -41,12 +43,10 @@ class App extends React.Component {
                 );
             } else if (this.state.needAskServer) {
                 return (<main><AskServer /></main>)
-            } else if (this.state.disconnect) {
-                return (<main><ConnexionError url={this.state.disconnect} message={"Connexion avec le serveur interrompue (\"" + this.state.disconnect + "\")"} /></main>)
             } else if (this.state.unknownServer) {
                 return (<main><ConnexionError url={this.state.unknownServer} message={"Impossible de se connecter au serveur (\"" + this.state.unknownServer + "\")"} /></main>)
             }
-            return (<main><Players name={this.state.name} /></main>)
+            return (<main><Players nameError={this.state.nameError} name={this.state.name} /></main>)
         }
         // connecting page
         return <main></main>

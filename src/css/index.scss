@@ -475,7 +475,6 @@ code {
   align-items: center;
   flex-direction: column;
   z-index: 10;
-  font-size: 2em;
   &>div {
     background-color: rgba(#ffffff, 0.8);
     width: 90%;
@@ -484,6 +483,7 @@ code {
     display: flex;
     h2 {
       margin: 0;
+      text-align: center;
     }
     button {
       background-color: white;
@@ -499,6 +499,7 @@ code {
         max-width: 100%;
     }
     &>section {
+            font-size: 2em;
           display: flex;
           align-items: center;
           flex-direction: column;
@@ -512,6 +513,7 @@ code {
           align-items: center;
           flex-direction: column;
           justify-content: center;
+          max-width: 100%;
           &>* {
             margin: 10px 0;
             font-size: 1.5rem;
@@ -535,6 +537,10 @@ code {
       flex-direction: column;
       padding: 20px;
       flex: 1;
+      font-size: 1.5em;
+      &>p {
+          text-align: center;
+      }
       &>ul {
         background-color: white;
         width: 100%;

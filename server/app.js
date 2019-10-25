@@ -19,7 +19,10 @@ io.sockets.on('connection', function(socket) {
     players.push(p);
 
     p.on('join', (data) => {
-        if (isPlayer(data.name)) return;
+        if (isPlayer(data.name)) {
+            p.send("nameError", {error: "Ce pseudo est déjà pris sur ce serveur."});
+            return;
+        }
         p.setName(data.name);
         p.send('name', {name: p.getName()});
         updatePlayers();
