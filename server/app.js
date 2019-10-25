@@ -7,6 +7,18 @@ var players = [];
 
 console.log('Demarrage...');
 
+var os = require('os');
+var interfaces = os.networkInterfaces();
+var addresses = [];
+for (var k in interfaces) {
+    for (var k2 in interfaces[k]) {
+        var address = interfaces[k][k2];
+        if (address.family === 'IPv4' && !address.internal) {
+            addresses.push(address.address);
+        }
+    }
+}
+
 var server = http.createServer();
 
 // Chargement de socket.io
@@ -80,4 +92,5 @@ function isPlayer(name) {
 
 server.listen(3001, function() {
     console.log('Serveur connecte sur le port 3001');
+    if (addresses[0]) console.log('IP du serveur sur le reseau local : http://' + addresses[0] + ":3001");
 });
