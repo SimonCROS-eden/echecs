@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/echecs/static/css/main.dc02d842.chunk.css",
+    "main.js": "/echecs/static/js/main.508bc064.chunk.js",
+    "main.js.map": "/echecs/static/js/main.508bc064.chunk.js.map",
+    "runtime-main.js": "/echecs/static/js/runtime-main.b25529f7.js",
+    "runtime-main.js.map": "/echecs/static/js/runtime-main.b25529f7.js.map",
+    "static/js/2.2087efd5.chunk.js": "/echecs/static/js/2.2087efd5.chunk.js",
+    "static/js/2.2087efd5.chunk.js.map": "/echecs/static/js/2.2087efd5.chunk.js.map",
+    "index.html": "/echecs/index.html",
+    "precache-manifest.6c546c390075758f6e4175138a574b0d.js": "/echecs/precache-manifest.6c546c390075758f6e4175138a574b0d.js",
+    "service-worker.js": "/echecs/service-worker.js",
+    "static/css/main.dc02d842.chunk.css.map": "/echecs/static/css/main.dc02d842.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b25529f7.js",
+    "static/js/2.2087efd5.chunk.js",
+    "static/css/main.dc02d842.chunk.css",
+    "static/js/main.508bc064.chunk.js"
+  ]
+}
